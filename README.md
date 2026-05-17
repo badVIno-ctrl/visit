@@ -2,17 +2,12 @@
 
 Чистая статика: HTML + CSS + JS. Никаких сборщиков и зависимостей.
 
-## Запуск локально (Windows)
-
-Самый простой способ — двойной клик по `index.html`. Откроется в браузере.
-
-Если хочешь нормальный локальный сервер (тогда iframe-превью работают стабильнее):
+## Запуск (Windows)
 
 ```powershell
 # из папки visit
 python -m http.server 5500
 ```
-
 Открой `http://localhost:5500`.
 
 ## Структура
@@ -28,30 +23,6 @@ visit/
 Список проектов и цены лежат прямо в `script.js` (массив `PROJECTS`) и в
 `index.html` (секция `services`). Менять — там же.
 
-## Деплой на GitHub Pages (рекомендуется)
-
-1. Создай новый репозиторий, например `badVIno-ctrl/visit` (или назови как
-   угодно — `me`, `card`, `index`).
-2. Залей содержимое этой папки в корень репозитория:
-   ```powershell
-   git init
-   git add .
-   git commit -m "init"
-   git branch -M main
-   git remote add origin https://github.com/badVIno-ctrl/visit.git
-   git push -u origin main
-   ```
-3. На GitHub: **Settings → Pages → Source: Deploy from a branch → main / root → Save**.
-4. Через 30–60 секунд сайт будет на `https://badvino-ctrl.github.io/visit/`.
-
-Если назвать репозиторий `badVIno-ctrl.github.io` — сайт будет на корневом
-адресе `https://badvino-ctrl.github.io/`.
-
-### Кастомный домен (по желанию)
-
-В настройках Pages укажи свой домен (например, `badvino.ru`), создай файл
-`CNAME` в корне с содержимым домена, у регистратора пропиши A-записи на
-GitHub Pages — и всё.
 
 ## Что делает страница
 
@@ -67,20 +38,6 @@ GitHub Pages — и всё.
 - Фон — `<canvas>` с дрейфующим алым свечением и сеткой точек, реагирует
   на курсор. Минималистично, без «стекла».
 
-## Как добавить новый проект
-
-В `script.js` добавь объект в массив `PROJECTS`:
-
-```js
-{
-  tag: "категория · подкатегория",
-  title: "Название",
-  desc: "Короткое описание (1–2 строки).",
-  url: "https://example.com",
-  chips: ["tag1", "tag2"],
-  mock: "shooter" // ключ из объекта MOCKS, либо добавь свой SVG туда
-}
-```
 
 ## Доступность и моб. версия
 
