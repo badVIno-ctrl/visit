@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#0a0a0a" />
+<title>badVIno — разработка сайтов, игр и сервисов с ИИ</title>
+<meta name="description" content="Делаю сайты, магазины, игры и сервисы с ИИ. 5 лет опыта, 9 языков программирования." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body class="intro-active">
+
+<!-- intro overlay -->
+<div class="intro" id="intro" aria-hidden="true">
+  <div class="intro-inner">
+    <div class="intro-text">bad<em>VI</em>no<span class="intro-dot">.</span></div>
+    <div class="intro-line"></div>
+    <div class="intro-sub">портфолио · 2026</div>
+  </div>
+</div>
+
+<canvas id="bg"></canvas>
+<div class="grain"></div>
+
+<header class="nav">
+  <a class="brand" href="#top" aria-label="В начало">
+    <span class="brand-mark">◢</span>
+    <span class="brand-name">badVIno<span class="dot">.</span></span>
+  </a>
+  <nav class="nav-links">
+    <a href="#about">обо мне</a>
+    <a href="#work">работы</a>
+    <a href="#services">услуги</a>
+    <a href="#contact">контакты</a>
+  </nav>
+  <button class="cta" data-action="scroll" data-target="#contact">
+    <span>написать</span>
+    <span class="cta-arrow">→</span>
+  </button>
+</header>
+
+<main id="top">
+
+<!-- HERO -->
+<section class="hero">
+  <div class="status">
+    <span class="status-dot"></span>
+    <span>принимаю заказы · сейчас онлайн</span>
+  </div>
+
+  <h1 class="hero-title">
+    Делаю <em>сайты</em>, <em>магазины</em>, <em>игры</em>
+    и сервисы с <em>ИИ</em>.
+  </h1>
+
+  <p class="hero-sub">
+    Не шаблоны. Не конструкторы. Код руками — от первой строки до запуска на сервере.
+    <span class="muted">Ниже — то, что уже работает.</span>
+  </p>
+
+  <div class="hero-actions">
+    <button class="btn btn-primary" data-action="scroll" data-target="#work">
+      смотреть работы
+      <span class="btn-arrow">↓</span>
+    </button>
+    <button class="btn btn-ghost" data-action="scroll" data-target="#services">
+      цены и услуги
+    </button>
+  </div>
+
+  <div class="hero-meta" role="navigation" aria-label="быстрые переходы">
+    <button class="meta-cell" data-action="scroll" data-target="#about">
+      <span class="meta-num">01</span>
+      <span class="meta-text">5 лет в коде</span>
+      <span class="meta-arrow">↗</span>
+    </button>
+    <button class="meta-cell" data-action="scroll" data-target="#about">
+      <span class="meta-num">02</span>
+      <span class="meta-text">9 языков</span>
+      <span class="meta-arrow">↗</span>
+    </button>
+    <button class="meta-cell" data-action="scroll" data-target="#work">
+      <span class="meta-num">03</span>
+      <span class="meta-text">9 проектов в&nbsp;доступе</span>
+      <span class="meta-arrow">↗</span>
+    </button>
+    <button class="meta-cell" data-action="scroll" data-target="#services">
+      <span class="meta-num">04</span>
+      <span class="meta-text">от ТЗ до домена — один человек</span>
+      <span class="meta-arrow">↗</span>
+    </button>
+  </div>
+
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-track">
+      <span>TypeScript</span><span>·</span><span>JavaScript</span><span>·</span>
+      <span>Python</span><span>·</span><span>Java</span><span>·</span>
+      <span>Kotlin</span><span>·</span><span>C++</span><span>·</span>
+      <span>C</span><span>·</span><span>HTML</span><span>·</span><span>CSS</span><span>·</span>
+      <span>TypeScript</span><span>·</span><span>JavaScript</span><span>·</span>
+      <span>Python</span><span>·</span><span>Java</span><span>·</span>
+      <span>Kotlin</span><span>·</span><span>C++</span><span>·</span>
+      <span>C</span><span>·</span><span>HTML</span><span>·</span><span>CSS</span><span>·</span>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="section about">
+  <div class="section-head">
+    <span class="section-num">/ 01</span>
+    <h2>Кратко обо мне</h2>
+  </div>
+  <div class="about-grid">
+    <p class="about-lead">
+      Зовут <strong>Влад</strong>. Пишу код пять лет, начинал с оптимизации рабочих процессов, сейчас собираю проекты целиком: фронтенд, бэкенд, база, деплой, домен. Без посредников и без «специалистов на аутсорсе».
+    </p>
+    <div class="about-cols">
+      <div>
+        <h4>Что делаю руками</h4>
+        <ul class="dash-list">
+          <li>сайты-визитки и лендинги</li>
+          <li>интернет-магазины с админкой</li>
+          <li>браузерные игры (одиночные и онлайн)</li>
+          <li>сервисы, в которые встроен ИИ</li>
+          <li>интеграции: оплата, авторизация, рассылки</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Стек</h4>
+        <ul class="dash-list">
+          <li>TypeScript, JavaScript, HTML, CSS</li>
+          <li>Python — бэкенд, ИИ, автоматизация</li>
+          <li>Java, Kotlin — Android и серверы</li>
+          <li>C, C++ — системные задачи</li>
+        </ul>
+        <p class="footnote">Также: Telegram-боты, десктоп- и мобильные приложения — по запросу.</p>
+      </div>
+      <div>
+        <h4>Как работаю</h4>
+        <ol class="num-list">
+          <li>обсуждаем задачу в личке — без формы и менеджера</li>
+          <li>называю срок и фикс-цену, без «плюс-минус»</li>
+          <li>показываю промежуточные версии, правки — в процессе, не в конце</li>
+          <li>сдаю готовый проект на твоём домене и сервере</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WORK -->
+<section id="work" class="section work">
+  <div class="section-head">
+    <span class="section-num">/ 02</span>
+    <h2>Работы</h2>
+    <p class="section-sub">Кликни по карточке — проект откроется в новой вкладке.</p>
+  </div>
+
+  <div class="cards" id="cards">
+    <!-- cards inserted by JS -->
+  </div>
+
+  <p class="work-foot muted">
+    Есть и другие проекты в работе — показываю по запросу.
+  </p>
+</section>
+
+<!-- SERVICES -->
+<section id="services" class="section services">
+  <div class="section-head">
+    <span class="section-num">/ 03</span>
+    <h2>Услуги и цены</h2>
+    <p class="section-sub">Цены фиксированные. В стоимость уже входит сервер на месяц и соответствие требованиям РКН. <span class="accent-soft">Скидка 30% на первый заказ — действует на любой тариф.</span></p>
+  </div>
+
+  <div class="services-grid">
+    <article class="service">
+      <div class="discount" aria-label="скидка 30% на первый заказ">
+        <span class="discount-dot"></span>
+        <span class="discount-pct">−30%</span>
+        <span class="discount-txt">на первый заказ</span>
+      </div>
+      <header>
+        <span class="service-tag">01 / визитка</span>
+        <h3>Сайт-визитка</h3>
+      </header>
+      <p>Лендинг или многостраничник для специалиста, мастера, маленькой компании. Адаптив под телефон, форма заявки, подключение к почте/Telegram.</p>
+      <ul class="dash-list">
+        <li>дизайн под задачу, без шаблонов</li>
+        <li>отдельный сервер на месяц</li>
+        <li>требования РКН учтены</li>
+      </ul>
+      <div class="price"><span class="from">от</span><span class="amount">12 000</span><span class="cur">₽</span></div>
+      <button class="btn btn-primary block" data-action="order" data-service="Сайт-визитка">обсудить</button>
+    </article>
+
+    <article class="service service-feature">
+      <div class="discount" aria-label="скидка 30% на первый заказ">
+        <span class="discount-dot"></span>
+        <span class="discount-pct">−30%</span>
+        <span class="discount-txt">на первый заказ</span>
+      </div>
+      <header>
+        <span class="service-tag">02 / магазин</span>
+        <h3>Онлайн-магазин</h3>
+      </header>
+      <p>Каталог, корзина, оплата, админка для добавления товаров. По желанию — встроенный ИИ-консультант, который отвечает покупателям 24/7.</p>
+      <ul class="dash-list">
+        <li>админка под клиента</li>
+        <li>отдельный сервер, требования РКН</li>
+        <li>ИИ-помощник — опция</li>
+      </ul>
+      <div class="price"><span class="from">от</span><span class="amount">35 000</span><span class="cur">₽</span></div>
+      <button class="btn btn-primary block" data-action="order" data-service="Онлайн-магазин">обсудить</button>
+    </article>
+
+    <article class="service">
+      <div class="discount" aria-label="скидка 30% на первый заказ">
+        <span class="discount-dot"></span>
+        <span class="discount-pct">−30%</span>
+        <span class="discount-txt">на первый заказ</span>
+      </div>
+      <header>
+        <span class="service-tag">03 / игра · ии</span>
+        <h3>Игра или сервис с ИИ</h3>
+      </header>
+      <p>Браузерная игра (одиночная или онлайн) уровня моих шахмат или шутера. Либо сервис со встроенной нейросетью под конкретную задачу.</p>
+      <ul class="dash-list">
+        <li>работает в браузере, без установки</li>
+        <li>сервер включён</li>
+        <li>мобильная версия — по согласованию</li>
+      </ul>
+      <div class="price"><span class="from">от</span><span class="amount">25 000</span><span class="cur">₽</span></div>
+      <button class="btn btn-primary block" data-action="order" data-service="Игра или сервис с ИИ">обсудить</button>
+    </article>
+  </div>
+
+  <p class="services-note muted">
+    Что-то нестандартное — бот, мобильное или десктоп-приложение, интеграция? Напиши — обсудим и назову цену.
+  </p>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="section contact">
+  <div class="section-head">
+    <span class="section-num">/ 04</span>
+    <h2>Связь</h2>
+    <p class="section-sub">Самый быстрый способ — Telegram. Отвечаю в течение 15 минут.</p>
+  </div>
+
+  <div class="contact-list">
+    <button class="contact-row" data-reveal="tg-user" data-copy="@badVInq" data-href="https://t.me/badVInq">
+      <span class="c-key">Telegram · личка</span>
+      <span class="c-val" data-val>нажми, чтобы открыть</span>
+      <span class="c-act">↗</span>
+    </button>
+    <button class="contact-row" data-reveal="tg-channel" data-copy="@VioraStudio" data-href="https://t.me/VioraStudio">
+      <span class="c-key">канал · Viora Studio</span>
+      <span class="c-val" data-val>нажми, чтобы открыть</span>
+      <span class="c-act">↗</span>
+    </button>
+    <button class="contact-row" data-reveal="gh" data-copy="badVIno-ctrl" data-href="https://github.com/badVIno-ctrl">
+      <span class="c-key">GitHub · код</span>
+      <span class="c-val" data-val>нажми, чтобы открыть</span>
+      <span class="c-act">↗</span>
+    </button>
+  </div>
+
+  <div class="contact-foot">
+    <p>Можно сразу с ТЗ, можно с одной строкой «хочу сайт про X» — разберёмся.</p>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="foot-l">
+    <span>© <span id="yr"></span> badVIno</span>
+    <span class="sep">·</span>
+    <span>сделано всё быстро и качественно</span>
+  </div>
+  <div class="foot-r">
+    <button data-action="scroll" data-target="#top">наверх ↑</button>
+  </div>
+</footer>
+
+<!-- toast -->
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
