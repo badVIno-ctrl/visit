@@ -87,3 +87,9 @@ GitHub Pages — и всё.
 - Семантическая разметка, `aria-label` где нужно.
 - `prefers-reduced-motion` уважается — анимации фона отключаются.
 - Адаптив до 360 px ширины.
+
+https://badvino-ctrl.github.io/visit/
+
+
+
+
