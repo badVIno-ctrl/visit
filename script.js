@@ -244,6 +244,7 @@ function renderCards(){
       ${PROJECTS.map((p, i) => `
         <article class="card project-card" data-project-card data-href="${p.url}" data-i="${i}" data-angle="${(360 / PROJECTS.length) * i}"
           style="--index:${i};--card-angle:${(360 / PROJECTS.length) * i}deg;--color-card:${colors[i % colors.length]};">
+          <div class="card-depth-overlay"></div>
           <div class="img">
             <div class="card-preview">
               <div class="browser-bar">
@@ -297,36 +298,99 @@ function bindProjectCarousel(){
   let dragging = false;
   let hoveringCard = false;
   let startX = 0;
+  let startY = 0;
   let lastX = 0;
   let lastMoveT = performance.now();
   let moved = 0;
   let lastT = performance.now();
   let lastPreviewT = 0;
+  let isMaybeDragging = false;
+  let hasDecidedDrag = false;
+  let isPointerCaptured = false;
 
   function setAngle(next){
     angle = next;
     inner.style.setProperty("--angle", `${angle}deg`);
+    updateCardDepth();
   }
 
   function signedAngle(value){
     return ((value + 540) % 360) - 180;
   }
 
-  function updateLivePreviews(){
+  function updateCardDepth() {
     for (const card of cards) {
       const cardAngle = Number(card.dataset.angle) || 0;
       const distanceFromFront = Math.abs(signedAngle(angle + cardAngle));
+      const normDistance = distanceFromFront / 180; // 0 to 1
+      
+      card.style.setProperty("--norm-distance", normDistance.toFixed(3));
+      
       const isFront = distanceFromFront < 18;
-      const isLive = distanceFromFront < 34;
-      const frame = card.querySelector(".preview-frame");
       card.classList.toggle("is-front", isFront);
-      card.classList.toggle("is-live-preview", isLive);
-      if (!frame) continue;
-      const currentSrc = frame.getAttribute("src");
-      if (isLive) {
-        if (!currentSrc) frame.setAttribute("src", frame.dataset.src);
-      } else if (currentSrc) {
-        frame.removeAttribute("src");
+    }
+  }
+
+  function updateLivePreviews(){
+    const isMobile = window.matchMedia("(max-width: 760px)").matches || ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+    
+    if (isMobile) {
+      // Mobile compromise: Load ONLY the single active card's iframe to keep 60fps/120fps touch performance
+      let closestCard = null;
+      let minDistance = Infinity;
+
+      for (const card of cards) {
+        const cardAngle = Number(card.dataset.angle) || 0;
+        const distanceFromFront = Math.abs(signedAngle(angle + cardAngle));
+        
+        if (distanceFromFront < minDistance) {
+          minDistance = distanceFromFront;
+          closestCard = card;
+        }
+      }
+
+      for (const card of cards) {
+        const frame = card.querySelector(".preview-frame");
+        if (!frame) continue;
+
+        const isFrontActive = (card === closestCard) && (minDistance < 22);
+        const currentSrc = frame.getAttribute("src");
+
+        card.classList.toggle("is-live-preview", isFrontActive);
+
+        if (isFrontActive) {
+          if (!currentSrc) {
+            frame.setAttribute("src", frame.dataset.src);
+          }
+        } else {
+          if (currentSrc) {
+            frame.removeAttribute("src");
+          }
+        }
+      }
+    } else {
+      // Desktop compromise: Load all visible cards in the front half (5 cards, distanceFromFront < 75)
+      // This ensures websites are preloaded and visible during rotation, while hiding the 8 back cards
+      for (const card of cards) {
+        const cardAngle = Number(card.dataset.angle) || 0;
+        const distanceFromFront = Math.abs(signedAngle(angle + cardAngle));
+        const frame = card.querySelector(".preview-frame");
+        if (!frame) continue;
+
+        const isVisible = distanceFromFront < 75;
+        const currentSrc = frame.getAttribute("src");
+
+        card.classList.toggle("is-live-preview", isVisible);
+
+        if (isVisible) {
+          if (!currentSrc) {
+            frame.setAttribute("src", frame.dataset.src);
+          }
+        } else {
+          if (currentSrc) {
+            frame.removeAttribute("src");
+          }
+        }
       }
     }
   }
@@ -359,19 +423,51 @@ function bindProjectCarousel(){
   });
   root.addEventListener("pointerdown", e => {
     if (e.pointerType === "mouse" && e.button !== 2) return;
-    dragging = true;
-    root.dataset.dragging = "false";
+    isMaybeDragging = true;
+    hasDecidedDrag = false;
     startX = lastX = e.clientX;
+    startY = e.clientY;
     lastMoveT = performance.now();
     moved = 0;
-    root.classList.add("is-dragging");
-    root.setPointerCapture(e.pointerId);
   });
 
   root.addEventListener("pointermove", e => {
-    if (!dragging) return;
+    if (!isMaybeDragging) return;
+    
     const now = performance.now();
     const dx = e.clientX - lastX;
+    const dy = e.clientY - startY;
+    const totalDx = e.clientX - startX;
+
+    if (!hasDecidedDrag) {
+      const absX = Math.abs(totalDx);
+      const absY = Math.abs(dy);
+      
+      if (absX > 8 || absY > 8) {
+        if (absX > absY) {
+          // Horizontal movement dominates: start drag-rotation!
+          dragging = true;
+          hasDecidedDrag = true;
+          root.dataset.dragging = "false";
+          root.classList.add("is-dragging");
+          try {
+            root.setPointerCapture(e.pointerId);
+            isPointerCaptured = true;
+          } catch (err) {}
+        } else {
+          // Vertical movement dominates: cancel dragging to let the page scroll!
+          isMaybeDragging = false;
+          dragging = false;
+          hasDecidedDrag = true;
+          return;
+        }
+      } else {
+        return;
+      }
+    }
+
+    if (!dragging) return;
+
     const dt = Math.max(16, now - lastMoveT);
     moved += Math.abs(dx);
     lastX = e.clientX;
@@ -382,12 +478,18 @@ function bindProjectCarousel(){
   });
 
   function stopDrag(e){
+    isMaybeDragging = false;
     if (!dragging) return;
     dragging = false;
     root.classList.remove("is-dragging");
     if (moved <= 5) root.dataset.dragging = "false";
     else setTimeout(() => { root.dataset.dragging = "false"; }, 140);
-    try { root.releasePointerCapture(e.pointerId); } catch {}
+    if (isPointerCaptured) {
+      try {
+        root.releasePointerCapture(e.pointerId);
+      } catch {}
+      isPointerCaptured = false;
+    }
   }
 
   root.addEventListener("pointerup", stopDrag);
