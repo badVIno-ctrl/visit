@@ -76,6 +76,38 @@ const PROJECTS = [
     chips: ["визитка", "адаптив", "меню"],
     mock: "coffee",
   },
+  {
+    tag: "доставка · каталог",
+    title: "ЖАРА",
+    desc: "Сервис доставки еды с каталогом блюд, фильтрами по категориям, корзиной и таймером доставки. Всё горячее, всё быстро.",
+    url: "https://badvino-ctrl.github.io/dost/",
+    chips: ["доставка", "корзина", "каталог"],
+    mock: "dost",
+  },
+  {
+    tag: "ремонт · сметы",
+    title: "СметаПро",
+    desc: "Конструктор смет для ремонта квартир и домов: комнаты, работы, материалы, автоитоги, PDF и ссылка для подрядчика.",
+    url: "https://badvino-ctrl.github.io/smetaonline/",
+    chips: ["PDF", "калькулятор", "ссылка"],
+    mock: "smeta",
+  },
+  {
+    tag: "город · интерактив",
+    title: "Сканер города",
+    desc: "Интерактивный сканер города для поиска скрытых мест, заброшек и интересных точек.",
+    url: "https://badvino-ctrl.github.io/intr/",
+    chips: ["карта", "сканер", "точки"],
+    mock: "intr",
+  },
+  {
+    tag: "сервис · ии",
+    title: "Viora AI",
+    desc: "ИИ-помощник от Viora Studio для быстрых идей, текста и рабочих задач в одном аккуратном интерфейсе.",
+    url: "https://badvino-ctrl.github.io/vioraAI/",
+    chips: ["AI", "Viora Studio", "ассистент"],
+    mock: "viora",
+  },
 ];
 
 /* ---------- mock backgrounds (shown if iframe blocked) ---------- */
@@ -155,6 +187,45 @@ const MOCKS = {
     <line x1="40" y1="150" x2="360" y2="150" stroke="#222" stroke-width="1"/>
     <text x="40" y="180" fill="#d11d2c" font-family="monospace" font-size="10">VIORA · HOURS</text>
   </svg>`,
+  dost: `<svg viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+    <defs><linearGradient id="ds" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#251007"/><stop offset="1" stop-color="#090909"/></linearGradient></defs>
+    <rect width="400" height="250" fill="url(#ds)"/>
+    <circle cx="92" cy="120" r="48" fill="#d11d2c" opacity=".9"/>
+    <circle cx="92" cy="120" r="32" fill="#ffb84d" opacity=".75"/>
+    <rect x="170" y="58" width="150" height="22" rx="11" fill="#241411"/>
+    <rect x="170" y="96" width="190" height="14" rx="7" fill="#372018"/>
+    <rect x="170" y="122" width="150" height="14" rx="7" fill="#2a1915"/>
+    <text x="28" y="220" fill="#ffb84d" font-family="monospace" font-size="12">ЖАРА · delivery</text>
+  </svg>`,
+  smeta: `<svg viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+    <rect width="400" height="250" fill="#08100f"/>
+    <rect x="34" y="42" width="130" height="150" rx="8" fill="#11201d" stroke="#45d8bd" stroke-width="1" opacity=".85"/>
+    <rect x="190" y="42" width="176" height="22" rx="5" fill="#17302b"/>
+    <rect x="190" y="78" width="142" height="16" rx="4" fill="#24433d"/>
+    <rect x="190" y="108" width="160" height="16" rx="4" fill="#24433d"/>
+    <rect x="190" y="152" width="176" height="34" rx="7" fill="#45d8bd" opacity=".8"/>
+    <text x="56" y="82" fill="#dff" font-family="monospace" font-size="11">room 01</text>
+    <text x="214" y="174" fill="#06100e" font-family="monospace" font-size="13" font-weight="bold">PDF · TOTAL</text>
+  </svg>`,
+  intr: `<svg viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+    <rect width="400" height="250" fill="#07090d"/>
+    <g stroke="#3f6dff" stroke-width="1" opacity=".28">
+      <path d="M0 68H400M0 128H400M0 188H400M70 0V250M160 0V250M250 0V250M340 0V250"/>
+    </g>
+    <circle cx="206" cy="126" r="64" fill="none" stroke="#6bf0ff" stroke-width="1.5" opacity=".75"/>
+    <circle cx="206" cy="126" r="28" fill="none" stroke="#d11d2c" stroke-width="1.5"/>
+    <circle cx="266" cy="82" r="5" fill="#d11d2c"/>
+    <circle cx="146" cy="168" r="4" fill="#6bf0ff"/>
+    <text x="28" y="220" fill="#6bf0ff" font-family="monospace" font-size="11">hidden city scanner</text>
+  </svg>`,
+  viora: `<svg viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+    <defs><radialGradient id="va" cx=".5" cy=".45" r=".65"><stop offset="0" stop-color="#d11d2c" stop-opacity=".55"/><stop offset="1" stop-color="#08080a"/></radialGradient></defs>
+    <rect width="400" height="250" fill="url(#va)"/>
+    <circle cx="200" cy="118" r="54" fill="none" stroke="#fff" stroke-width="1" opacity=".36"/>
+    <circle cx="200" cy="118" r="18" fill="#fff" opacity=".9"/>
+    <path d="M120 172 C160 142 240 142 280 172" fill="none" stroke="#ff6b78" stroke-width="2" opacity=".85"/>
+    <text x="126" y="214" fill="#fff" font-family="monospace" font-size="12">VIORA AI · studio</text>
+  </svg>`,
 };
 
 /* ---------- render cards ---------- */
@@ -162,39 +233,201 @@ function hostFromUrl(u){ try{ return new URL(u).host.replace(/^www\./,""); }catc
 
 function renderCards(){
   const root = document.getElementById("cards");
-  root.innerHTML = PROJECTS.map((p, i) => `
-    <article class="card reveal" data-href="${p.url}" data-i="${i}" style="transition-delay:${(i%4)*60}ms">
-      <div class="card-preview">
-        <div class="browser-bar">
-          <span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
-          <span class="browser-url">${hostFromUrl(p.url)}</span>
-        </div>
-        <div class="preview-mock">${MOCKS[p.mock] || ""}</div>
-        <iframe class="preview-frame" loading="lazy" referrerpolicy="no-referrer"
-                sandbox="allow-scripts allow-same-origin"
-                src="${p.url}" tabindex="-1" aria-hidden="true"></iframe>
-        <div class="card-overlay">
-          <span class="open-pill">открыть <span>↗</span></span>
-        </div>
-      </div>
-      <div class="card-body">
-        <span class="card-tag">${p.tag}</span>
-        <h3 class="card-title">${p.title}</h3>
-        <p class="card-desc">${p.desc}</p>
-        <div class="card-meta">
-          ${p.chips.map(c => `<span class="chip${c==="только ПК"||c==="wip"?" warn":""}">${c}</span>`).join("")}
-        </div>
-      </div>
-    </article>
-  `).join("");
+  const colors = [
+    "142, 249, 252", "142, 252, 204", "252, 142, 142", "252, 208, 142",
+    "215, 252, 142", "252, 142, 239", "204, 142, 252", "142, 202, 252",
+    "255, 184, 77", "69, 216, 189", "107, 240, 255", "255, 107, 120",
+    "255, 255, 170",
+  ];
+  root.innerHTML = `
+    <div class="inner" data-carousel-inner style="--quantity:${PROJECTS.length};">
+      ${PROJECTS.map((p, i) => `
+        <article class="card project-card" data-project-card data-href="${p.url}" data-i="${i}" data-angle="${(360 / PROJECTS.length) * i}"
+          style="--index:${i};--card-angle:${(360 / PROJECTS.length) * i}deg;--color-card:${colors[i % colors.length]};">
+          <div class="img">
+            <div class="card-preview">
+              <div class="browser-bar">
+                <span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
+                <span class="browser-url">${hostFromUrl(p.url)}</span>
+              </div>
+              <div class="preview-mock">${MOCKS[p.mock] || ""}</div>
+              <iframe class="preview-frame" loading="lazy" referrerpolicy="no-referrer"
+                      sandbox="allow-scripts allow-same-origin"
+                      data-src="${p.url}" tabindex="-1" aria-hidden="true"></iframe>
+              <div class="card-overlay">
+                <span class="open-pill">открыть <span>↗</span></span>
+              </div>
+            </div>
+            <div class="card-body">
+              <span class="card-tag">${p.tag}</span>
+              <h3 class="card-title">${p.title}</h3>
+              <p class="card-desc">${p.desc}</p>
+              <div class="card-meta">
+                ${p.chips.map(c => `<span class="chip${c==="только ПК"||c==="wip"?" warn":""}">${c}</span>`).join("")}
+              </div>
+            </div>
+          </div>
+        </article>
+      `).join("")}
+    </div>
+    <div class="carousel-hint">правой кнопкой мыши или пальцем — вращать</div>
+  `;
+  root.style.setProperty("--quantity", PROJECTS.length);
 
   // click → open
-  root.querySelectorAll(".card").forEach(card => {
+  root.querySelectorAll("[data-project-card]").forEach(card => {
     card.addEventListener("click", () => {
+      if (root.dataset.dragging === "true") return;
       const url = card.dataset.href;
       window.open(url, "_blank", "noopener");
     });
   });
+}
+
+function bindProjectCarousel(){
+  const root = document.getElementById("cards");
+  if (!root) return;
+  const inner = root.querySelector("[data-carousel-inner]");
+  if (!inner) return;
+  const cards = [...root.querySelectorAll("[data-project-card]")];
+
+  let angle = 0;
+  const idleSpeed = 0.008;
+  let velocity = idleSpeed;
+  let dragging = false;
+  let hoveringCard = false;
+  let startX = 0;
+  let lastX = 0;
+  let lastMoveT = performance.now();
+  let moved = 0;
+  let lastT = performance.now();
+  let lastPreviewT = 0;
+
+  function setAngle(next){
+    angle = next;
+    inner.style.setProperty("--angle", `${angle}deg`);
+  }
+
+  function signedAngle(value){
+    return ((value + 540) % 360) - 180;
+  }
+
+  function updateLivePreviews(){
+    for (const card of cards) {
+      const cardAngle = Number(card.dataset.angle) || 0;
+      const distanceFromFront = Math.abs(signedAngle(angle + cardAngle));
+      const isFront = distanceFromFront < 18;
+      const isLive = distanceFromFront < 34;
+      const frame = card.querySelector(".preview-frame");
+      card.classList.toggle("is-front", isFront);
+      card.classList.toggle("is-live-preview", isLive);
+      if (!frame) continue;
+      const currentSrc = frame.getAttribute("src");
+      if (isLive) {
+        if (!currentSrc) frame.setAttribute("src", frame.dataset.src);
+      } else if (currentSrc) {
+        frame.removeAttribute("src");
+      }
+    }
+  }
+
+  function tick(now){
+    const dt = Math.min(32, now - lastT);
+    lastT = now;
+    if (document.hidden) {
+      requestAnimationFrame(tick);
+      return;
+    }
+    if (!dragging) {
+      const targetSpeed = hoveringCard ? idleSpeed * 0.2 : idleSpeed;
+      velocity += (targetSpeed - velocity) * 0.014;
+      setAngle(angle + velocity * dt);
+    }
+    if (now - lastPreviewT > 140) {
+      lastPreviewT = now;
+      updateLivePreviews();
+    }
+    requestAnimationFrame(tick);
+  }
+
+  root.addEventListener("contextmenu", e => e.preventDefault());
+  root.addEventListener("pointerenter", e => {
+    if (e.pointerType === "mouse") hoveringCard = true;
+  });
+  root.addEventListener("pointerleave", () => {
+    hoveringCard = false;
+  });
+  root.addEventListener("pointerdown", e => {
+    if (e.pointerType === "mouse" && e.button !== 2) return;
+    dragging = true;
+    root.dataset.dragging = "false";
+    startX = lastX = e.clientX;
+    lastMoveT = performance.now();
+    moved = 0;
+    root.classList.add("is-dragging");
+    root.setPointerCapture(e.pointerId);
+  });
+
+  root.addEventListener("pointermove", e => {
+    if (!dragging) return;
+    const now = performance.now();
+    const dx = e.clientX - lastX;
+    const dt = Math.max(16, now - lastMoveT);
+    moved += Math.abs(dx);
+    lastX = e.clientX;
+    lastMoveT = now;
+    velocity = (dx / dt) * 0.12;
+    setAngle(angle + dx * 0.34);
+    if (Math.abs(e.clientX - startX) > 5) root.dataset.dragging = "true";
+  });
+
+  function stopDrag(e){
+    if (!dragging) return;
+    dragging = false;
+    root.classList.remove("is-dragging");
+    if (moved <= 5) root.dataset.dragging = "false";
+    else setTimeout(() => { root.dataset.dragging = "false"; }, 140);
+    try { root.releasePointerCapture(e.pointerId); } catch {}
+  }
+
+  root.addEventListener("pointerup", stopDrag);
+  root.addEventListener("pointercancel", stopDrag);
+  root.addEventListener("wheel", e => {
+    if (!e.shiftKey && Math.abs(e.deltaX) < Math.abs(e.deltaY)) return;
+    e.preventDefault();
+    const wheelDelta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+    velocity += wheelDelta * 0.00035;
+  }, {passive:false});
+
+  setAngle(0);
+  updateLivePreviews();
+  requestAnimationFrame(tick);
+}
+
+/* ---------- keep first load on the hero, not restored section/hash ---------- */
+function resetInitialScroll(){
+  if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+  if (location.hash) history.replaceState(null, "", location.href.split("#")[0]);
+  let locked = true;
+  const unlock = () => { locked = false; };
+  const forceTop = () => {
+    if (locked) window.scrollTo({top:0, left:0, behavior:"auto"});
+  };
+  ["wheel", "touchstart", "pointerdown", "keydown"].forEach(type => {
+    window.addEventListener(type, unlock, {once:true, passive:true});
+  });
+  forceTop();
+  requestAnimationFrame(forceTop);
+  setTimeout(forceTop, 80);
+  setTimeout(forceTop, 500);
+  setTimeout(forceTop, 1600);
+  setTimeout(forceTop, 2300);
+  window.addEventListener("pageshow", forceTop, {once:true});
+  window.addEventListener("load", () => {
+    forceTop();
+    setTimeout(forceTop, 120);
+    setTimeout(unlock, 2800);
+  }, {once:true});
 }
 
 /* ---------- smooth scroll for [data-action="scroll"] ---------- */
@@ -204,6 +437,16 @@ function bindScroll(){
       e.preventDefault();
       const target = document.querySelector(el.dataset.target);
       if (target) target.scrollIntoView({behavior:"smooth", block:"start"});
+    });
+  });
+
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener("click", e => {
+      const target = document.querySelector(link.getAttribute("href"));
+      if (!target) return;
+      e.preventDefault();
+      target.scrollIntoView({behavior:"smooth", block:"start"});
+      history.replaceState(null, "", location.href.split("#")[0]);
     });
   });
 }
@@ -361,8 +604,10 @@ function handleIntro(){
 document.getElementById("yr").textContent = new Date().getFullYear();
 
 /* ---------- init ---------- */
+resetInitialScroll();
 handleIntro();
 renderCards();
+bindProjectCarousel();
 bindScroll();
 bindOrders();
 bindContacts();
