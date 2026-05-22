@@ -293,6 +293,7 @@ function bindProjectCarousel(){
   const cards = [...root.querySelectorAll("[data-project-card]")];
 
   let angle = 0;
+  let targetAngle = 0;
   const idleSpeed = 0.008;
   let velocity = idleSpeed;
   let dragging = false;
@@ -307,6 +308,9 @@ function bindProjectCarousel(){
   let isMaybeDragging = false;
   let hasDecidedDrag = false;
   let isPointerCaptured = false;
+  let carouselVisible = false;
+  let animationFrameId = null;
+  let activeFrameTimeout = null;
 
   function setAngle(next){
     angle = next;
@@ -332,86 +336,94 @@ function bindProjectCarousel(){
   }
 
   function updateLivePreviews(){
-    const isMobile = window.matchMedia("(max-width: 760px)").matches || ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+    if (!carouselVisible) return;
     
-    if (isMobile) {
-      // Mobile compromise: Load ONLY the single active card's iframe to keep 60fps/120fps touch performance
-      let closestCard = null;
-      let minDistance = Infinity;
+    const isRotatingRapidly = Math.abs(velocity) > 0.05 || dragging;
 
-      for (const card of cards) {
-        const cardAngle = Number(card.dataset.angle) || 0;
-        const distanceFromFront = Math.abs(signedAngle(angle + cardAngle));
-        
-        if (distanceFromFront < minDistance) {
-          minDistance = distanceFromFront;
-          closestCard = card;
-        }
+    // If active rotation or dragging is in progress, suspend new loads for maximum smoothness
+    if (isRotatingRapidly) {
+      if (activeFrameTimeout) {
+        clearTimeout(activeFrameTimeout);
+        activeFrameTimeout = null;
       }
+      return;
+    }
 
-      for (const card of cards) {
-        const frame = card.querySelector(".preview-frame");
-        if (!frame) continue;
+    // A load is already scheduled/in progress, let it finish!
+    if (activeFrameTimeout) {
+      return;
+    }
 
-        const isFrontActive = (card === closestCard) && (minDistance < 22);
-        const currentSrc = frame.getAttribute("src");
+    // Get visible cards in the front half (distanceFromFront < 85 degrees)
+    const visibleCards = cards.filter(card => {
+      const cardAngle = Number(card.dataset.angle) || 0;
+      const distanceFromFront = Math.abs(signedAngle(angle + cardAngle));
+      return distanceFromFront < 85;
+    });
 
-        card.classList.toggle("is-live-preview", isFrontActive);
+    // Sort by proximity to front center (closest first)
+    visibleCards.sort((a, b) => {
+      const distA = Math.abs(signedAngle(angle + (Number(a.dataset.angle) || 0)));
+      const distB = Math.abs(signedAngle(angle + (Number(b.dataset.angle) || 0)));
+      return distA - distB;
+    });
 
-        if (isFrontActive) {
-          if (!currentSrc) {
+    // Find the first visible card that is not yet loaded
+    const nextToLoad = visibleCards.find(card => {
+      const frame = card.querySelector(".preview-frame");
+      return frame && !frame.getAttribute("src");
+    });
+
+    // Make sure loaded frames are visually active (have class is-live-preview)
+    for (const card of cards) {
+      const frame = card.querySelector(".preview-frame");
+      const hasSrc = frame && frame.getAttribute("src");
+      card.classList.toggle("is-live-preview", !!hasSrc);
+    }
+
+    // Load one card's iframe, then schedule the next one sequentially
+    if (nextToLoad) {
+      const frame = nextToLoad.querySelector(".preview-frame");
+      if (frame) {
+        activeFrameTimeout = setTimeout(() => {
+          activeFrameTimeout = null; // Clear immediately so subsequent calls can schedule next loads
+          if (carouselVisible && !dragging && Math.abs(velocity) < 0.05) {
             frame.setAttribute("src", frame.dataset.src);
+            nextToLoad.classList.add("is-live-preview");
+            
+            // Queue the next visible unloaded card after a gentle delay
+            setTimeout(updateLivePreviews, 400);
           }
-        } else {
-          if (currentSrc) {
-            frame.removeAttribute("src");
-          }
-        }
-      }
-    } else {
-      // Desktop compromise: Load all visible cards in the front half (5 cards, distanceFromFront < 75)
-      // This ensures websites are preloaded and visible during rotation, while hiding the 8 back cards
-      for (const card of cards) {
-        const cardAngle = Number(card.dataset.angle) || 0;
-        const distanceFromFront = Math.abs(signedAngle(angle + cardAngle));
-        const frame = card.querySelector(".preview-frame");
-        if (!frame) continue;
-
-        const isVisible = distanceFromFront < 75;
-        const currentSrc = frame.getAttribute("src");
-
-        card.classList.toggle("is-live-preview", isVisible);
-
-        if (isVisible) {
-          if (!currentSrc) {
-            frame.setAttribute("src", frame.dataset.src);
-          }
-        } else {
-          if (currentSrc) {
-            frame.removeAttribute("src");
-          }
-        }
+        }, 150);
       }
     }
   }
 
   function tick(now){
+    if (!carouselVisible) {
+      animationFrameId = null;
+      return;
+    }
     const dt = Math.min(32, now - lastT);
     lastT = now;
     if (document.hidden) {
-      requestAnimationFrame(tick);
+      animationFrameId = requestAnimationFrame(tick);
       return;
     }
-    if (!dragging) {
+    if (dragging) {
+      const diff = targetAngle - angle;
+      setAngle(angle + diff * 0.28);
+    } else {
       const targetSpeed = hoveringCard ? idleSpeed * 0.2 : idleSpeed;
       velocity += (targetSpeed - velocity) * 0.014;
       setAngle(angle + velocity * dt);
+      targetAngle = angle;
     }
     if (now - lastPreviewT > 140) {
       lastPreviewT = now;
       updateLivePreviews();
     }
-    requestAnimationFrame(tick);
+    animationFrameId = requestAnimationFrame(tick);
   }
 
   root.addEventListener("contextmenu", e => e.preventDefault());
@@ -429,6 +441,7 @@ function bindProjectCarousel(){
     startY = e.clientY;
     lastMoveT = performance.now();
     moved = 0;
+    targetAngle = angle;
   });
 
   root.addEventListener("pointermove", e => {
@@ -445,7 +458,6 @@ function bindProjectCarousel(){
       
       if (absX > 8 || absY > 8) {
         if (absX > absY) {
-          // Horizontal movement dominates: start drag-rotation!
           dragging = true;
           hasDecidedDrag = true;
           root.dataset.dragging = "false";
@@ -455,7 +467,6 @@ function bindProjectCarousel(){
             isPointerCaptured = true;
           } catch (err) {}
         } else {
-          // Vertical movement dominates: cancel dragging to let the page scroll!
           isMaybeDragging = false;
           dragging = false;
           hasDecidedDrag = true;
@@ -473,7 +484,7 @@ function bindProjectCarousel(){
     lastX = e.clientX;
     lastMoveT = now;
     velocity = (dx / dt) * 0.12;
-    setAngle(angle + dx * 0.34);
+    targetAngle += dx * 0.34;
     if (Math.abs(e.clientX - startX) > 5) root.dataset.dragging = "true";
   });
 
@@ -501,34 +512,37 @@ function bindProjectCarousel(){
     velocity += wheelDelta * 0.00035;
   }, {passive:false});
 
+  if ("IntersectionObserver" in window) {
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        carouselVisible = entry.isIntersecting;
+        if (carouselVisible) {
+          lastT = performance.now();
+          if (!animationFrameId) {
+            animationFrameId = requestAnimationFrame(tick);
+          }
+          updateLivePreviews();
+        }
+      });
+    }, { rootMargin: "200px 0px 200px 0px" });
+    observer.observe(root);
+  } else {
+    carouselVisible = true;
+  }
+
   setAngle(0);
-  updateLivePreviews();
-  requestAnimationFrame(tick);
+  if (!("IntersectionObserver" in window)) {
+    animationFrameId = requestAnimationFrame(tick);
+  }
 }
 
 /* ---------- keep first load on the hero, not restored section/hash ---------- */
 function resetInitialScroll(){
   if ("scrollRestoration" in history) history.scrollRestoration = "manual";
   if (location.hash) history.replaceState(null, "", location.href.split("#")[0]);
-  let locked = true;
-  const unlock = () => { locked = false; };
-  const forceTop = () => {
-    if (locked) window.scrollTo({top:0, left:0, behavior:"auto"});
-  };
-  ["wheel", "touchstart", "pointerdown", "keydown"].forEach(type => {
-    window.addEventListener(type, unlock, {once:true, passive:true});
-  });
-  forceTop();
-  requestAnimationFrame(forceTop);
-  setTimeout(forceTop, 80);
-  setTimeout(forceTop, 500);
-  setTimeout(forceTop, 1600);
-  setTimeout(forceTop, 2300);
-  window.addEventListener("pageshow", forceTop, {once:true});
+  window.scrollTo({top:0, left:0, behavior:"auto"});
   window.addEventListener("load", () => {
-    forceTop();
-    setTimeout(forceTop, 120);
-    setTimeout(unlock, 2800);
+    window.scrollTo({top:0, left:0, behavior:"auto"});
   }, {once:true});
 }
 
@@ -608,72 +622,6 @@ function bindReveal(){
   els.forEach(e => io.observe(e));
 }
 
-/* ---------- animated background canvas (dot grid + drifting accent) ---------- */
-function startBg(){
-  const c = document.getElementById("bg");
-  const ctx = c.getContext("2d");
-  let w, h, dpr, dots = [];
-  const SPACING = 44;
-
-  function resize(){
-    dpr = Math.min(window.devicePixelRatio || 1, 2);
-    w = c.width = innerWidth * dpr;
-    h = c.height = innerHeight * dpr;
-    c.style.width = innerWidth+"px";
-    c.style.height = innerHeight+"px";
-    buildDots();
-  }
-  function buildDots(){
-    dots = [];
-    const sp = SPACING * dpr;
-    for (let y = sp/2; y < h; y += sp){
-      for (let x = sp/2; x < w; x += sp){
-        dots.push({x, y, p: Math.random()*Math.PI*2});
-      }
-    }
-  }
-  let mx = -9999, my = -9999;
-  addEventListener("mousemove", e => { mx = e.clientX*dpr; my = e.clientY*dpr; });
-  addEventListener("mouseleave", () => { mx = my = -9999; });
-
-  let t = 0;
-  function tick(){
-    t += 0.006;
-    ctx.clearRect(0,0,w,h);
-
-    // drifting accent glow
-    const gx = w * (0.5 + Math.cos(t*0.4)*0.3);
-    const gy = h * (0.5 + Math.sin(t*0.3)*0.3);
-    const grad = ctx.createRadialGradient(gx, gy, 0, gx, gy, 360*dpr);
-    grad.addColorStop(0, "rgba(209,29,44,0.10)");
-    grad.addColorStop(1, "rgba(209,29,44,0)");
-    ctx.fillStyle = grad;
-    ctx.fillRect(0,0,w,h);
-
-    // dots
-    for (const d of dots){
-      const dx = d.x - mx, dy = d.y - my;
-      const dist = Math.sqrt(dx*dx + dy*dy);
-      const near = Math.max(0, 1 - dist/(180*dpr));
-      const tw = 0.35 + Math.sin(t*1.2 + d.p)*0.15;
-      const a = Math.min(1, tw + near*0.9);
-      const r = (1.1 + near*1.6) * dpr;
-      if (near > 0.15){
-        ctx.fillStyle = `rgba(209,29,44,${a*0.9})`;
-      } else {
-        ctx.fillStyle = `rgba(200,200,200,${a*0.22})`;
-      }
-      ctx.beginPath();
-      ctx.arc(d.x, d.y, r, 0, Math.PI*2);
-      ctx.fill();
-    }
-    requestAnimationFrame(tick);
-  }
-  resize();
-  addEventListener("resize", resize);
-  tick();
-}
-
 /* ---------- intro ---------- */
 function handleIntro(){
   const intro = document.getElementById("intro");
@@ -714,4 +662,3 @@ bindScroll();
 bindOrders();
 bindContacts();
 bindReveal();
-if (!matchMedia("(prefers-reduced-motion: reduce)").matches) startBg();
