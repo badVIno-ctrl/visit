@@ -3901,7 +3901,7 @@ padding: 1.5rem;
 @media (max-width: 768px) {
   /* heavy blur is the main scroll-jank source on phones; trim it on the
      glass panels that already use it (purely a paint optimization) */
-  .nexus-header { backdrop-filter: blur(12px) !important; -webkit-backdrop-filter: blur(12px) !important; }
+.nexus-header { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
   .nexus-hero-stats,
   .nexus-core-stage, .nexus-core-chip, .nexus-core-side-panel, .nexus-core-panel,
   .nexus-s2-node,
@@ -3909,8 +3909,8 @@ padding: 1.5rem;
   .nexus-s4-monitor-label,
   .nexus-s5-leaderboard, .nexus-s5-current-run,
   .nexus-s7-status {
-    backdrop-filter: blur(9px) !important;
-    -webkit-backdrop-filter: blur(9px) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
   }
   /* guard against any horizontal overflow that causes mobile stutter */
   html, body { overflow-x: hidden !important; max-width: 100% !important; }
@@ -3928,8 +3928,8 @@ padding: 1.5rem;
   .nexus-s4-monitor-label,
   .nexus-s5-leaderboard, .nexus-s5-current-run,
   .nexus-s7-status {
-    backdrop-filter: blur(6px) !important;
-    -webkit-backdrop-filter: blur(6px) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
   }
 }
 
@@ -4523,6 +4523,17 @@ body.nexus-menu-open .nexus-mobile-menu {
    decorative motion so weak phones scroll more smoothly.
    ========================================================= */
 @media (max-width: 767px) {
+  /* Pair with viewport-only canvas rendering: pin the canvas to the
+     viewport so scroll-relative cube drawing lines up exactly. */
+  #physics-layer,
+  #pixel-canvas {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100svh !important;
+  }
+
   .nexus-header,
   .nexus-mobile-menu,
   .nexus-hero-stats,
@@ -4544,8 +4555,8 @@ body.nexus-menu-open .nexus-mobile-menu {
   .nexus-s6-card,
   .nexus-s6-command,
   .nexus-s7-status {
-    -webkit-backdrop-filter: blur(4px) !important;
-    backdrop-filter: blur(4px) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
   }
 
   .nexus-core-ring,
@@ -4571,6 +4582,15 @@ body.nexus-menu-open .nexus-mobile-menu {
     animation: none !important;
   }
 
+  /* Max-smooth: stop every decorative CSS keyframe animation inside the page
+     shell on phones. The cube field is drawn on <canvas> via JS, so it is NOT
+     affected by this and keeps falling/animating as before. */
+  .nexus-page-shell *,
+  .nexus-page-shell *::before,
+  .nexus-page-shell *::after {
+    animation: none !important;
+  }
+
   .nexus-header,
   .nexus-mobile-menu,
   .nexus-core-stage,
@@ -4589,7 +4609,14 @@ body.nexus-menu-open .nexus-mobile-menu {
     transform: none !important;
   }
 
-  .nexus-hero,
+  .nexus-hero {
+    contain: layout paint;
+  }
+
+  /* Skip layout+paint for sections that are off-screen. The browser only
+     renders a section when it nears the viewport, so scrolling no longer
+     pays for the heavy multi-layer gradients/grids of every section at once.
+     contain-intrinsic-size keeps the scrollbar stable while collapsed. */
   .nexus-s2-frame,
   .nexus-s3-section,
   .nexus-s4-section,
@@ -4598,6 +4625,8 @@ body.nexus-menu-open .nexus-mobile-menu {
   .nexus-s7-section,
   .nexus-footer {
     contain: layout paint;
+    content-visibility: auto;
+    contain-intrinsic-size: auto 900px;
   }
 
   .nexus-scanlines {
@@ -6440,7 +6469,7 @@ body.nexus-menu-open .nexus-mobile-menu {
 
   const mm = gsap.matchMedia();
 
-  mm.add("(prefers-reduced-motion: no-preference)", () => {
+  mm.add("(prefers-reduced-motion: no-preference) and (min-width: 768px)", () => {
 
     /* ---------- Helper: prime + play a section ---------- */
 
@@ -6798,12 +6827,15 @@ body.nexus-menu-open .nexus-mobile-menu {
 
     const presets = {
       high: { countScale: 1,    shadowBlur: 16, drawFps: 0  },
-      mid:  { countScale: 0.7,  shadowBlur: 8,  drawFps: 0  },
-      low:  { countScale: 0.45, shadowBlur: 0,  drawFps: 30 }
+      mid:  { countScale: 0.5,  shadowBlur: 0,  drawFps: 30 },
+      low:  { countScale: 0.3,  shadowBlur: 0,  drawFps: 30 }
     };
 
     return Object.assign({ tier: tier, isMobile: isMobileDevice }, presets[tier]);
   })();
+
+  const renderViewportOnly = perfProfile.isMobile;
+  const enableHeavyMotion = !perfProfile.isMobile;
 
   function scaledCount(n) {
     return Math.max(6, Math.round(n * perfProfile.countScale));
@@ -6871,13 +6903,15 @@ body.nexus-menu-open .nexus-mobile-menu {
     pageHeight = getPageHeight();
 
     canvas.width = width;
-    canvas.height = pageHeight;
+    canvas.height = renderViewportOnly ? height : pageHeight;
 
-    physicsLayer.style.height = `${pageHeight}px`;
+    physicsLayer.style.height = renderViewportOnly ? `${height}px` : `${pageHeight}px`;
 
     if (started) {
       resetPhysicsScene();
-      ScrollTrigger.refresh();
+      if (enableHeavyMotion) {
+        ScrollTrigger.refresh();
+      }
     }
   }
 
@@ -8648,6 +8682,14 @@ setupSection5Animations();
     const size = block.size;
     const color = block.color;
 
+    const scrollTop = renderViewportOnly ? (window.scrollY || window.pageYOffset || 0) : 0;
+    const drawY = renderViewportOnly ? pos.y - scrollTop : pos.y;
+    const margin = size + 180;
+
+    if (renderViewportOnly && (drawY < -margin || drawY > height + margin)) {
+      return;
+    }
+
     const blinkPulse = Math.sin(time * 0.002 + block.blinkOffset) * 0.18 + 0.82;
 
     block.alpha += (block.targetAlpha - block.alpha) * block.flickerСкорость;
@@ -8659,7 +8701,7 @@ setupSection5Animations();
     const alpha = Math.max(0.08, block.alpha * blinkPulse);
 
     ctx.save();
-    ctx.translate(pos.x, pos.y);
+    ctx.translate(pos.x, drawY);
     ctx.rotate(angle);
 
     if (perfProfile.shadowBlur > 0) {
@@ -8686,16 +8728,17 @@ setupSection5Animations();
   }
 
   function drawBackgroundBase() {
+    const drawHeight = renderViewportOnly ? height : pageHeight;
     ctx.fillStyle = "#03000a";
-    ctx.fillRect(0, 0, width, pageHeight);
+    ctx.fillRect(0, 0, width, drawHeight);
 
     const gradient = ctx.createRadialGradient(
       width * 0.78,
-      height * 0.38,
+      drawHeight * 0.38,
       0,
       width * 0.78,
-      height * 0.38,
-      Math.max(width, height) * 0.72
+      drawHeight * 0.38,
+      Math.max(width, drawHeight) * 0.72
     );
 
     gradient.addColorStop(0, "rgba(0, 240, 255, 0.13)");
@@ -8703,7 +8746,7 @@ setupSection5Animations();
     gradient.addColorStop(1, "rgba(5, 0, 16, 0)");
 
     ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, width, height);
+    ctx.fillRect(0, 0, width, drawHeight);
   }
 
   const minFrameInterval = perfProfile.drawFps > 0
@@ -8729,9 +8772,6 @@ setupSection5Animations();
       return;
     }
 
-    /* Cap the redraw rate on low-end devices. We still reschedule on rAF
-       so physics keeps advancing smoothly, but we skip the expensive
-       full-canvas repaint until enough time has elapsed. */
     if (minFrameInterval > 0 && !finalStaticFramePending) {
       if (time - lastDrawTime < minFrameInterval) {
         if (physicsActive) {
@@ -8762,60 +8802,64 @@ setupSection5Animations();
      ===================================================== */
 
   function setupScrollPhysics() {
-  ScrollTrigger.create({
-    trigger: "#chaos-to-form",
-    start: "top 72%",
-    once: true,
-    onEnter: () => {
-      activateSection2Physics();
+    if (renderViewportOnly) {
+      return;
     }
-  });
 
-  ScrollTrigger.create({
-    trigger: "#game-modes",
-    start: "top 72%",
-    once: true,
-    onEnter: () => {
-      activateSection3Physics();
-    }
-  });
+    ScrollTrigger.create({
+      trigger: "#chaos-to-form",
+      start: "top 72%",
+      once: true,
+      onEnter: () => {
+        activateSection2Physics();
+      }
+    });
 
-  ScrollTrigger.create({
-    trigger: "#collision-engine",
-    start: "top 72%",
-    once: true,
-    onEnter: () => {
-      activateSection4Physics();
-    }
-  });
+    ScrollTrigger.create({
+      trigger: "#game-modes",
+      start: "top 72%",
+      once: true,
+      onEnter: () => {
+        activateSection3Physics();
+      }
+    });
 
-  ScrollTrigger.create({
-    trigger: "#high-scores",
-    start: "top 72%",
-    once: true,
-    onEnter: () => {
-      activateSection5Physics();
-    }
-  });
+    ScrollTrigger.create({
+      trigger: "#collision-engine",
+      start: "top 72%",
+      once: true,
+      onEnter: () => {
+        activateSection4Physics();
+      }
+    });
 
-  ScrollTrigger.create({
-    trigger: "#cheat-codes",
-    start: "top 72%",
-    once: true,
-    onEnter: () => {
-      activateSection6Physics();
-    }
-  });
+    ScrollTrigger.create({
+      trigger: "#high-scores",
+      start: "top 72%",
+      once: true,
+      onEnter: () => {
+        activateSection5Physics();
+      }
+    });
 
-  ScrollTrigger.create({
-    trigger: "#join-the-guild",
-    start: "top 72%",
-    once: true,
-    onEnter: () => {
-      activateSection7Physics();
-    }
-  });
-}
+    ScrollTrigger.create({
+      trigger: "#cheat-codes",
+      start: "top 72%",
+      once: true,
+      onEnter: () => {
+        activateSection6Physics();
+      }
+    });
+
+    ScrollTrigger.create({
+      trigger: "#join-the-guild",
+      start: "top 72%",
+      once: true,
+      onEnter: () => {
+        activateSection7Physics();
+      }
+    });
+  }
 
 
   /* =====================================================
@@ -8868,9 +8912,25 @@ setupSection5Animations();
     }, 180);
   }, { passive: true });
 
+  /* On phones the canvas is pinned to the viewport and drawn scroll-relative.
+     While the cubes are still falling we repaint on scroll so they stay anchored
+     to the page content (cheap: canvas is only viewport-sized). Once the pile
+     has settled we STOP repainting on scroll — the last static frame stays
+     painted on the fixed canvas, so the cubes become a fixed background and
+     scrolling is buttery smooth (no per-scroll canvas paint at all). */
+  if (renderViewportOnly) {
+    window.addEventListener("scroll", () => {
+      if (physicsActive || finalStaticFramePending) {
+        requestPixelFrame();
+      }
+    }, { passive: true });
+  }
+
   window.addEventListener("load", () => {
     resize();
-    ScrollTrigger.refresh();
+    if (enableHeavyMotion) {
+      ScrollTrigger.refresh();
+    }
     wakePixelRenderer();
   });
 
@@ -8882,7 +8942,7 @@ setupSection5Animations();
         wakePixelRenderer();
       }
     }, {
-      rootMargin: "360px 0px"
+      rootMargin: renderViewportOnly ? "160px 0px" : "360px 0px"
     });
 
     canvasObserver.observe(canvas);
