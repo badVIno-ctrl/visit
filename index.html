@@ -90,7 +90,7 @@ setPaused(event.data.paused);
 })();
 </script>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>badVIno — сайты, магазины, игры и сервисы с ИИ</title>
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -3932,188 +3932,403 @@ padding: 1.5rem;
     -webkit-backdrop-filter: blur(6px) !important;
   }
 }
-/* ============================================================
-   MOBILE OPTIMIZATION PASS (added)
-   Navigation (burger), touch targets, spacing, overflow & paint
-   smoothness for phones. Background gradient, #pixel-canvas physics,
-   .nexus-cube* and all @keyframes are intentionally NOT modified.
-   ============================================================ */
-html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
-a, button,
-.nexus-nav-link, .nexus-header-cta,
-.nexus-button-primary, .nexus-button-secondary,
-.nexus-mobile-link, .nexus-mobile-cta, .nexus-footer-link {
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
+
+/* =========================================================
+   MOBILE QUALITY PASS.
+   Keeps the existing background, cubes and keyframe animations intact.
+   ========================================================= */
+.nexus-page-shell {
+  overflow-x: clip;
 }
 
-/* ---------- Burger button ---------- */
-.nexus-burger {
-  display: none;
-  position: relative;
-  width: 2.75rem;
-  height: 2.75rem;
-  flex: 0 0 auto;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid rgba(53, 221, 242, 0.42);
-  background: linear-gradient(180deg, rgba(53,221,242,0.13), rgba(53,221,242,0.04));
-  color: var(--nexus-cyan);
-  cursor: pointer;
-  box-shadow: 0 0 18px rgba(53,221,242,0.14), inset 0 0 14px rgba(53,221,242,0.05);
-  clip-path: polygon(0 8px,8px 8px,8px 0,calc(100% - 8px) 0,calc(100% - 8px) 8px,100% 8px,100% calc(100% - 8px),calc(100% - 8px) calc(100% - 8px),calc(100% - 8px) 100%,8px 100%,8px calc(100% - 8px),0 calc(100% - 8px));
-  -webkit-appearance: none;
-  appearance: none;
-  transition: color 250ms ease, border-color 250ms ease, box-shadow 250ms ease;
+.nexus-s2-frame,
+.nexus-s3-catcher,
+.nexus-s4-catcher,
+.nexus-s5-section,
+.nexus-s6-section,
+.nexus-s7-section,
+.nexus-footer {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 980px;
 }
-.nexus-burger-box { position: relative; display: block; width: 1.3rem; height: 0.85rem; }
-.nexus-burger-line,
-.nexus-burger-line::before,
-.nexus-burger-line::after {
-  position: absolute; left: 0; width: 100%; height: 2px;
-  background: currentColor; border-radius: 2px;
-  transition: transform 280ms ease, opacity 200ms ease, top 280ms ease, background 200ms ease;
+
+@supports not (overflow: clip) {
+  .nexus-page-shell { overflow-x: hidden; }
 }
-.nexus-burger-line { top: 50%; transform: translateY(-50%); }
-.nexus-burger-line::before { content: ""; top: -6px; }
-.nexus-burger-line::after { content: ""; top: 6px; }
-.nexus-burger[aria-expanded="true"] { color: var(--nexus-gold); border-color: rgba(232,184,93,0.6); }
-.nexus-burger[aria-expanded="true"] .nexus-burger-line { background: transparent; }
-.nexus-burger[aria-expanded="true"] .nexus-burger-line::before { top: 0; transform: rotate(45deg); }
-.nexus-burger[aria-expanded="true"] .nexus-burger-line::after { top: 0; transform: rotate(-45deg); }
+
 @media (max-width: 767px) {
-  .nexus-burger { display: inline-flex; }
-  .nexus-header-cta { display: none !important; }
-}
-
-/* ---------- Mobile navigation drawer ---------- */
-.nexus-mobile-menu { position: fixed; inset: 0; z-index: 70; visibility: hidden; pointer-events: none; }
-.nexus-mobile-menu.is-open { visibility: visible; pointer-events: auto; }
-.nexus-mobile-overlay {
-  position: absolute; inset: 0;
-  background: rgba(3, 0, 10, 0.72);
-  -webkit-backdrop-filter: blur(5px); backdrop-filter: blur(5px);
-  opacity: 0; transition: opacity 320ms ease;
-}
-.nexus-mobile-menu.is-open .nexus-mobile-overlay { opacity: 1; }
-.nexus-mobile-panel {
-  position: absolute;
-  top: calc(env(safe-area-inset-top, 0px) + 5.25rem);
-  left: max(1rem, env(safe-area-inset-left));
-  right: max(1rem, env(safe-area-inset-right));
-  display: flex; flex-direction: column; gap: 0.4rem;
-  padding: 0.9rem;
-  border: 1px solid rgba(255,255,255,0.12);
-  background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.012)), rgba(7, 0, 20, 0.94);
-  -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px);
-  box-shadow: 0 30px 70px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.06);
-  clip-path: polygon(0 12px,12px 12px,12px 0,calc(100% - 12px) 0,calc(100% - 12px) 12px,100% 12px,100% calc(100% - 12px),calc(100% - 12px) calc(100% - 12px),calc(100% - 12px) 100%,12px 100%,12px calc(100% - 12px),0 calc(100% - 12px));
-  transform: translateY(-14px); opacity: 0;
-  transition: transform 340ms cubic-bezier(0.22,1,0.36,1), opacity 300ms ease;
-}
-.nexus-mobile-menu.is-open .nexus-mobile-panel { transform: translateY(0); opacity: 1; }
-.nexus-mobile-link {
-  display: flex; align-items: center; min-height: 52px;
-  padding: 0.55rem 0.9rem;
-  font-family: "Space Mono", monospace;
-  font-size: 0.95rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.14em;
-  color: rgba(247,242,255,0.78);
-  border: 1px solid transparent; transition: 220ms ease;
-}
-.nexus-mobile-link:hover, .nexus-mobile-link:active {
-  color: var(--nexus-cyan); background: rgba(53,221,242,0.08); border-color: rgba(53,221,242,0.22);
-}
-.nexus-mobile-cta {
-  display: flex; align-items: center; justify-content: center; gap: 0.55rem;
-  margin-top: 0.5rem; min-height: 54px; padding: 0.9rem 1.1rem;
-  border: 1px solid rgba(232,184,93,0.5); background: rgba(232,184,93,0.08);
-  color: var(--nexus-gold); font-weight: 700; font-size: 0.9rem;
-  text-transform: uppercase; letter-spacing: 0.2em; transition: 220ms ease;
-}
-.nexus-mobile-cta:active { background: var(--nexus-gold); color: var(--nexus-bg); }
-body.nexus-menu-open { overflow: hidden; }
-@media (min-width: 768px) { .nexus-mobile-menu { display: none !important; } }
-
-/* ---------- Touch targets & layout polish on phones ---------- */
-@media (max-width: 767px) {
-  html { scroll-padding-top: 5.25rem; }
-  .nexus-footer-link { display: inline-flex; align-items: center; min-height: 44px; }
-  .nexus-footer-nav { gap: 0.25rem 1.1rem; }
-  .nexus-hero, .nexus-s3-section, .nexus-s4-section,
-  .nexus-s5-section, .nexus-s6-section, .nexus-s7-section,
-  .nexus-footer { max-width: 100%; }
-}
-@media (max-width: 639px) {
-  .nexus-hero-actions .nexus-button-primary,
-  .nexus-hero-actions .nexus-button-secondary,
-  .nexus-s7-actions .nexus-s7-button-primary,
-  .nexus-s7-actions .nexus-s7-button-secondary { width: 100%; }
-}
-@media (max-width: 420px) {
-  .nexus-hero { padding-left: 1.1rem; padding-right: 1.1rem; }
-  .nexus-s3-section, .nexus-s4-section, .nexus-s5-section,
-  .nexus-s6-section, .nexus-s7-section, .nexus-footer {
-    padding-left: 1.1rem; padding-right: 1.1rem;
+  html {
+    scroll-padding-top: 5.8rem;
   }
-}
 
-/* ---------- Paint smoothness on phones ----------
-   Trims very large glow shadow on the heaviest glass frame to reduce
-   per-frame paint cost while scrolling. Background, canvas physics and
-   animations are unchanged. */
-@media (max-width: 767px) {
-  .nexus-s2-frame { box-shadow: 0 0 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(248,243,255,0.06); }
-}
-/* ============================================================
-   WEAK-PHONE SMOOTHNESS + OVERLAP FIXES (added)
-   Pure performance/layout work. The background gradient,
-   #pixel-canvas physics, .nexus-cube* and all @keyframes are
-   intentionally left untouched.
-   ============================================================ */
-@media (max-width: 768px) {
-  /* backdrop-filter re-blurs the live animated canvas on EVERY frame — the
-     single biggest scroll-jank source on weak phones. Remove it and make the
-     glass panels a touch more opaque so the text stays crisp. */
-  .nexus-header,
-  .nexus-hero-stats,
-  .nexus-core-stage, .nexus-core-chip, .nexus-core-side-panel, .nexus-core-panel,
-  .nexus-s2-node, .nexus-s4-monitor-label,
-  .nexus-s3-tip, .nexus-s3-rank,
-  .nexus-s5-leaderboard, .nexus-s5-current-run,
-  .nexus-s7-status {
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
+  body {
+    text-rendering: optimizeLegibility;
   }
-  .nexus-header { background-color: rgba(5, 0, 16, 0.93) !important; }
-  .nexus-s2-node { background: rgba(2, 3, 10, 0.94) !important; }
-  .nexus-s4-monitor-label { background: rgba(2, 3, 10, 0.94) !important; }
 
-  /* ---- Fix overlapping labels inside the "monitor" visuals ---- */
-  /* corner pills: compact + width-capped so opposite corners never collide */
-  .nexus-s2-node, .nexus-s4-monitor-label {
+  .nexus-header {
+    top: 0.55rem;
+    width: calc(100% - 1rem);
+    min-height: 4.7rem;
+    padding: 0.58rem 0.65rem;
+    gap: 0.75rem;
+  }
+
+  .nexus-logo {
+    min-width: 0;
+  }
+
+  .nexus-logo-mark {
+    width: 2.25rem;
+    height: 2.25rem;
+    flex: 0 0 auto;
+  }
+
+  .nexus-logo .font-display {
+    font-size: clamp(1.18rem, 7vw, 1.48rem) !important;
+    line-height: 0.95;
+    letter-spacing: -0.025em !important;
+  }
+
+  .nexus-logo .tracking-\[0\.32em\] {
+    max-width: 12.5rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: clamp(0.48rem, 2.4vw, 0.58rem) !important;
+    letter-spacing: 0.22em !important;
+  }
+
+  .nexus-hero {
+    min-height: auto;
+    padding: 8.6rem 1rem 4.8rem;
+    gap: 3rem;
+  }
+
+  .nexus-hero-kicker,
+  .nexus-s3-eyebrow,
+  .nexus-s4-eyebrow,
+  .nexus-s5-eyebrow,
+  .nexus-s6-eyebrow,
+  .nexus-s7-eyebrow {
+    max-width: 100%;
+    align-items: flex-start;
+    gap: 0.55rem;
+  }
+
+  .nexus-hero-kicker .tracking-\[0\.28em\],
+  .nexus-s3-eyebrow .tracking-\[0\.28em\],
+  .nexus-s4-eyebrow .tracking-\[0\.28em\],
+  .nexus-s5-eyebrow .tracking-\[0\.28em\],
+  .nexus-s6-eyebrow .tracking-\[0\.28em\],
+  .nexus-s7-eyebrow .tracking-\[0\.28em\] {
+    min-width: 0;
+    overflow-wrap: anywhere;
+    letter-spacing: 0.16em !important;
+    line-height: 1.35;
+  }
+
+  .nexus-hero-title,
+  .nexus-s2-title,
+  .nexus-s3-title,
+  .nexus-s4-title,
+  .nexus-s5-title,
+  .nexus-s6-title,
+  .nexus-s7-title {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    word-break: normal;
+    letter-spacing: -0.035em !important;
+  }
+
+  .nexus-hero-title {
+    font-size: clamp(3rem, 14.5vw, 4.55rem) !important;
+    line-height: 0.9;
+  }
+
+  .nexus-s2-title,
+  .nexus-s3-title,
+  .nexus-s4-title,
+  .nexus-s5-title,
+  .nexus-s6-title {
+    font-size: clamp(2.35rem, 11vw, 3.35rem) !important;
+    line-height: 0.94;
+  }
+
+  .nexus-s7-title {
+    font-size: clamp(3.3rem, 15vw, 4.8rem) !important;
+    line-height: 0.9;
+  }
+
+  .nexus-hero-copy,
+  .nexus-s2-intro,
+  .nexus-s3-copy,
+  .nexus-s4-copy,
+  .nexus-s5-copy,
+  .nexus-s6-copy,
+  .nexus-s7-copy {
+    font-size: clamp(0.94rem, 3.8vw, 1.02rem) !important;
+    line-height: 1.68 !important;
+    overflow-wrap: anywhere;
+  }
+
+  .nexus-button-primary,
+  .nexus-button-secondary,
+  .nexus-s7-button-primary,
+  .nexus-s7-button-secondary {
+    min-height: 3.2rem;
+    padding-inline: 1rem;
+    white-space: normal;
+    line-height: 1.2;
+  }
+
+  .nexus-core-wrap {
+    max-width: min(100%, 24rem);
+    margin-inline: auto;
+  }
+
+  .nexus-core-stage {
+    min-height: 30rem;
+  }
+
+  #chaos-to-form {
+    padding-inline: 0.75rem !important;
+    padding-bottom: 4.5rem !important;
+  }
+
+  .nexus-s2-frame > .relative {
+    min-height: auto !important;
+    padding: 1rem !important;
+  }
+
+  .nexus-s2-content-grid,
+  .nexus-s3-mode-grid,
+  .nexus-s5-board-grid,
+  .nexus-s6-layout,
+  .nexus-s6-code-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .nexus-s2-machine-header,
+  .nexus-s5-metric-top,
+  .nexus-s5-run-panel .flex,
+  .nexus-s6-card-top {
+    min-width: 0;
+    align-items: flex-start;
+  }
+
+  .nexus-s2-machine-title,
+  .nexus-s3-card-title,
+  .nexus-s4-process-title,
+  .nexus-s5-player-name,
+  .nexus-s5-player-meta,
+  .nexus-s6-card-title,
+  .nexus-s6-card-command-code,
+  .nexus-s6-terminal {
+    overflow-wrap: anywhere;
+    hyphens: auto;
+  }
+
+  .nexus-s2-monitor {
+    height: clamp(27rem, 130vw, 32rem) !important;
+  }
+
+  .nexus-s2-node {
+    max-width: calc(50% - 0.65rem);
     min-width: 0 !important;
-    max-width: 44% !important;
-    font-size: 0.6rem !important;
+    padding: 0.55rem 0.5rem !important;
+    gap: 0.38rem;
+    font-size: clamp(0.58rem, 2.45vw, 0.68rem) !important;
+    letter-spacing: 0.08em !important;
+    line-height: 1.15;
+    overflow-wrap: anywhere;
+  }
+
+  .nexus-s2-node.input,
+  .nexus-s2-node.output {
+    left: 0.65rem;
+  }
+
+  .nexus-s2-node.collision,
+  .nexus-s2-node.system {
+    right: 0.65rem;
+  }
+
+  .nexus-s2-node.input,
+  .nexus-s2-node.collision {
+    top: 1rem;
+  }
+
+  .nexus-s2-node.output,
+  .nexus-s2-node.system {
+    bottom: 8.4rem;
+  }
+
+  .nexus-s2-chamber {
+    top: 43%;
+    width: min(68%, 16rem);
+  }
+
+  .nexus-s2-core {
+    width: 5.8rem;
+    height: 5.8rem;
+  }
+
+  .nexus-s2-console {
+    padding: 0.9rem;
+  }
+
+  .nexus-s2-meter-label,
+  .nexus-s5-progress-label {
+    gap: 0.65rem;
+    align-items: flex-start;
+    font-size: clamp(0.62rem, 2.7vw, 0.72rem) !important;
     letter-spacing: 0.1em !important;
-    padding: 0.5rem 0.55rem !important;
-    gap: 0.4rem !important;
-    line-height: 1.15 !important;
+    line-height: 1.25;
   }
-  /* S2: lift bottom pills above the console; keep the console on one short row */
-  .nexus-s2-node.output, .nexus-s2-node.system { bottom: 27% !important; }
-  .nexus-s2-console { padding: 0.9rem !important; }
+
+  .nexus-s4-monitor {
+    height: clamp(29rem, 138vw, 33rem) !important;
+  }
+
+  .nexus-s4-monitor-label {
+    max-width: calc(50% - 0.8rem);
+    min-width: 0 !important;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    font-size: clamp(0.58rem, 2.55vw, 0.68rem) !important;
+    letter-spacing: 0.1em !important;
+    line-height: 1.15;
+  }
+
+  .nexus-s5-leaderboard {
+    overflow: hidden;
+  }
+
+  .nexus-s5-leaderboard-head,
+  .nexus-s5-row {
+    grid-template-columns: 2.45rem minmax(0, 1fr) 2.3rem !important;
+    column-gap: 0.65rem;
+    padding-inline: 0.75rem !important;
+  }
+
+  .nexus-s5-leaderboard-head {
+    font-size: clamp(0.58rem, 2.6vw, 0.68rem) !important;
+    letter-spacing: 0.1em !important;
+  }
+
+  .nexus-s5-rank-number {
+    font-size: clamp(1.7rem, 8vw, 2.15rem) !important;
+  }
+
+  .nexus-s5-player-name {
+    font-size: clamp(0.92rem, 4.2vw, 1.04rem) !important;
+    line-height: 1.08;
+  }
+
+  .nexus-s5-player-meta {
+    font-size: clamp(0.68rem, 3.1vw, 0.78rem) !important;
+    letter-spacing: 0.06em !important;
+    line-height: 1.35;
+  }
+
+  .nexus-s5-score {
+    font-size: clamp(2rem, 9vw, 2.55rem) !important;
+  }
+
+  .nexus-s6-command {
+    padding: 1rem !important;
+  }
+
+  .nexus-s6-command-inner {
+    grid-template-columns: minmax(0, 1fr);
+    display: grid;
+    gap: 0.95rem;
+  }
+
+  .nexus-s6-command-code {
+    font-size: clamp(1rem, 5vw, 1.28rem) !important;
+    line-height: 1.18;
+    overflow-wrap: anywhere;
+  }
+
+  .nexus-s6-command-code span {
+    font-size: 1em !important;
+  }
+
+  .nexus-s6-command-button {
+    width: 100%;
+    min-height: 3rem;
+  }
+
+  .nexus-footer-grid,
+  .nexus-footer-meta {
+    grid-template-columns: minmax(0, 1fr) !important;
+    text-align: left;
+  }
+
+  .nexus-footer-nav {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 380px) {
+  .nexus-header {
+    min-height: 4.45rem;
+  }
+
+  .nexus-logo {
+    gap: 0.55rem !important;
+  }
+
+  .nexus-logo-mark {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .nexus-hero {
+    padding-top: 8rem;
+    padding-inline: 0.85rem;
+  }
+
+  .nexus-hero-title {
+    font-size: clamp(2.65rem, 14vw, 3.65rem) !important;
+  }
+
+  .nexus-s2-title,
+  .nexus-s3-title,
+  .nexus-s4-title,
+  .nexus-s5-title,
+  .nexus-s6-title {
+    font-size: clamp(2.08rem, 10.5vw, 2.85rem) !important;
+  }
+
+  .nexus-s7-title {
+    font-size: clamp(2.85rem, 14.5vw, 4rem) !important;
+  }
+
+  .nexus-s2-node {
+    max-width: calc(50% - 0.45rem);
+    font-size: 0.56rem !important;
+    letter-spacing: 0.05em !important;
+  }
+
   .nexus-s2-console .grid {
-    grid-template-columns: 1fr auto !important;
-    gap: 0.6rem !important;
-    align-items: end !important;
+    gap: 0.8rem !important;
   }
-  .nexus-s2-console .grid > div:last-child { padding: 0.55rem 0.6rem !important; }
-  /* S4: lift the bottom labels above the (taller) stacked console */
-  .nexus-s4-monitor-label.motion,
-  .nexus-s4-monitor-label.system { bottom: 35% !important; }
-  .nexus-s4-console { padding: 0.9rem !important; }
-  .nexus-s4-console-grid { gap: 0.7rem !important; }
+
+  .nexus-s5-leaderboard-head,
+  .nexus-s5-row {
+    grid-template-columns: 2.1rem minmax(0, 1fr) 1.9rem !important;
+    column-gap: 0.5rem;
+    padding-inline: 0.62rem !important;
+  }
+
+  .nexus-s5-player-meta {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
 }
 </style><!-- aura-ga4-end -->
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTMiIGZpbGw9IiMwMjAzMEEiLz48cmVjdCB4PSIzLjUiIHk9IjMuNSIgd2lkdGg9IjU3IiBoZWlnaHQ9IjU3IiByeD0iMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzM1RERGMiIgc3Ryb2tlLXdpZHRoPSIyIiBvcGFjaXR5PSIwLjU1Ii8+PHBhdGggZD0iTTE2IDE4IEwzMiA0NyBMNDggMTgiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0U4Qjg1RCIgc3Ryb2tlLXdpZHRoPSI2IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48Y2lyY2xlIGN4PSI0OCIgY3k9IjE4IiByPSIzLjQiIGZpbGw9IiNGNDVCQTgiLz48L3N2Zz4=">
@@ -4173,25 +4388,7 @@ body.nexus-menu-open { overflow: hidden; }
         Написать
       </a>
 
-      <!-- Mobile burger (added) -->
-      <button type="button" id="nexus-burger" class="nexus-burger" aria-label="Открыть меню" aria-expanded="false" aria-controls="nexus-mobile-menu">
-        <span class="nexus-burger-box"><span class="nexus-burger-line"></span></span>
-      </button>
-
     </header>
-
-    <!-- Mobile navigation drawer (added) -->
-    <div id="nexus-mobile-menu" class="nexus-mobile-menu" aria-hidden="true">
-      <div class="nexus-mobile-overlay" data-menu-close></div>
-      <nav class="nexus-mobile-panel" role="dialog" aria-modal="true" aria-label="Навигация">
-        <a href="#" class="nexus-mobile-link">[ Главная ]</a>
-        <a href="#game-modes" class="nexus-mobile-link">Услуги</a>
-        <a href="#high-scores" class="nexus-mobile-link">Цифры</a>
-        <a href="#cheat-codes" class="nexus-mobile-link">Стек</a>
-        <a href="#join-the-guild" class="nexus-mobile-link">Контакты</a>
-        <a href="#join-the-guild" class="nexus-mobile-cta"><span class="text-base leading-none">●</span> Написать</a>
-      </nav>
-    </div>
 
     <!-- =====================================================
          HERO SECTION
@@ -5326,7 +5523,7 @@ body.nexus-menu-open { overflow: hidden; }
 
                 <div>
                   <div class="nexus-s5-player-name" data-s5-collider="player-name">Сканер города</div>
-                  <div class="nexus-s5-player-meta" data-s5-collider="player-meta">интер��ктивный поиск точек</div>
+                  <div class="nexus-s5-player-meta" data-s5-collider="player-meta">интерактивный поиск точек</div>
                 </div>
 
                 <div class="nexus-s5-run-type text-[#ff66b3]" data-s5-collider="run-type">карта</div>
@@ -6236,6 +6433,9 @@ body.nexus-menu-open { overflow: hidden; }
   let physicsActive = true;
   let settleTimer = null;
   let started = false;
+  let pixelFrameId = null;
+  let finalStaticFramePending = false;
+  let canvasInView = true;
   let wordCollidersCreated = false;
   let delayedWaveReleased = false;
   let sceneStartTime = performance.now();
@@ -8005,6 +8205,9 @@ setupSection5Animations();
     physicsActive = true;
     settleTimer = null;
     sceneStartTime = performance.now();
+    if (typeof wakePixelRenderer === "function") {
+      wakePixelRenderer();
+    }
 
     if (runner) {
       Runner.run(runner, engine);
@@ -8065,6 +8268,9 @@ setupSection5Animations();
     if (runner) {
       Runner.stop(runner);
     }
+
+    finalStaticFramePending = true;
+    requestPixelFrame();
   }
 
 
@@ -8115,61 +8321,56 @@ setupSection5Animations();
   }
 
   function drawBackgroundBase() {
-    /* Repaint only the on-screen band each frame instead of the whole
-       page-tall canvas. Off-screen pixels are not visible, so the result is
-       identical — but on long pages this saves a huge fill every frame. */
-    var sY = window.pageYOffset || document.documentElement.scrollTop || 0;
-    var vh = window.innerHeight || height;
-    var bandTop = sY - 600;
-    if (bandTop < 0) bandTop = 0;
-    var bandBottom = sY + vh + 600;
-    if (bandBottom > pageHeight) bandBottom = pageHeight;
-    var bandHeight = bandBottom - bandTop;
-
     ctx.fillStyle = "#03000a";
-    if (bandHeight > 0) {
-      ctx.fillRect(0, bandTop, width, bandHeight);
-    }
+    ctx.fillRect(0, 0, width, pageHeight);
 
-    if (bandTop < height) {
-      const gradient = ctx.createRadialGradient(
-        width * 0.78,
-        height * 0.38,
-        0,
-        width * 0.78,
-        height * 0.38,
-        Math.max(width, height) * 0.72
-      );
+    const gradient = ctx.createRadialGradient(
+      width * 0.78,
+      height * 0.38,
+      0,
+      width * 0.78,
+      height * 0.38,
+      Math.max(width, height) * 0.72
+    );
 
-      gradient.addColorStop(0, "rgba(0, 240, 255, 0.13)");
-      gradient.addColorStop(0.35, "rgba(255, 0, 127, 0.08)");
-      gradient.addColorStop(1, "rgba(5, 0, 16, 0)");
+    gradient.addColorStop(0, "rgba(0, 240, 255, 0.13)");
+    gradient.addColorStop(0.35, "rgba(255, 0, 127, 0.08)");
+    gradient.addColorStop(1, "rgba(5, 0, 16, 0)");
 
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, width, height);
-    }
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, width, height);
+  }
+
+  function requestPixelFrame() {
+    if (pixelFrameId !== null) return;
+
+    pixelFrameId = requestAnimationFrame(animatePixels);
+  }
+
+  function wakePixelRenderer() {
+    finalStaticFramePending = false;
+    requestPixelFrame();
   }
 
   function animatePixels(time) {
+    pixelFrameId = null;
+
+    if (!canvasInView && !physicsActive && !finalStaticFramePending) {
+      return;
+    }
+
     drawBackgroundBase();
 
-    /* Only draw blocks that are within (or just outside) the viewport.
-       Off-screen blocks are invisible, so culling them keeps the look
-       identical while skipping the expensive shadowBlur draw on weak phones. */
-    var sY = window.pageYOffset || document.documentElement.scrollTop || 0;
-    var vh = window.innerHeight || height;
-    var cullTop = sY - 400;
-    var cullBottom = sY + vh + 400;
-
     blocks.forEach(block => {
-      var by = block.body.position.y;
-      if (by < cullTop || by > cullBottom) return;
       drawBlock(block, time);
     });
 
     checkSettled();
 
-    requestAnimationFrame(animatePixels);
+    if (physicsActive || finalStaticFramePending) {
+      finalStaticFramePending = false;
+      requestPixelFrame();
+    }
   }
 
 
@@ -8267,6 +8468,7 @@ setupSection5Animations();
     wordCollidersCreated = false;
     delayedWaveReleased = false;
     sceneStartTime = performance.now();
+    wakePixelRenderer();
 
     setTimeout(() => {
       createWordColliders();
@@ -8274,14 +8476,34 @@ setupSection5Animations();
     }, 900);
   }
 
+  let resizeTimer = null;
   window.addEventListener("resize", () => {
-    resize();
-  });
+    window.clearTimeout(resizeTimer);
+    resizeTimer = window.setTimeout(() => {
+      resize();
+      wakePixelRenderer();
+    }, 180);
+  }, { passive: true });
 
   window.addEventListener("load", () => {
     resize();
     ScrollTrigger.refresh();
+    wakePixelRenderer();
   });
+
+  if ("IntersectionObserver" in window) {
+    const canvasObserver = new IntersectionObserver((entries) => {
+      canvasInView = entries.some(entry => entry.isIntersecting);
+
+      if (canvasInView) {
+        wakePixelRenderer();
+      }
+    }, {
+      rootMargin: "360px 0px"
+    });
+
+    canvasObserver.observe(canvas);
+  }
 
   resize();
   resetPhysicsScene();
@@ -8290,7 +8512,7 @@ setupSection5Animations();
 
   setupScrollPhysics();
 
-  requestAnimationFrame(animatePixels);
+  wakePixelRenderer();
   </script>
 
 
@@ -8382,42 +8604,6 @@ setupSection5Animations();
     bind();
   }
   window.addEventListener('load', jumpToInitialHash);
-})();
-</script>
-<script id="nexus-mobile-nav">
-(function(){
-  var burger = document.getElementById('nexus-burger');
-  var menu = document.getElementById('nexus-mobile-menu');
-  if (!burger || !menu) return;
-  var links = menu.querySelectorAll('a');
-  function open(){
-    menu.classList.add('is-open');
-    menu.setAttribute('aria-hidden','false');
-    burger.setAttribute('aria-expanded','true');
-    document.body.classList.add('nexus-menu-open');
-  }
-  function close(){
-    menu.classList.remove('is-open');
-    menu.setAttribute('aria-hidden','true');
-    burger.setAttribute('aria-expanded','false');
-    document.body.classList.remove('nexus-menu-open');
-  }
-  burger.addEventListener('click', function(){
-    menu.classList.contains('is-open') ? close() : open();
-  });
-  menu.addEventListener('click', function(e){
-    var t = e.target;
-    if (t && t.hasAttribute && t.hasAttribute('data-menu-close')) close();
-  });
-  Array.prototype.forEach.call(links, function(a){
-    a.addEventListener('click', function(){ close(); });
-  });
-  document.addEventListener('keydown', function(e){
-    if ((e.key === 'Escape' || e.keyCode === 27) && menu.classList.contains('is-open')) close();
-  });
-  window.addEventListener('resize', function(){
-    if (window.innerWidth >= 768 && menu.classList.contains('is-open')) close();
-  });
 })();
 </script>
 </body></html>
