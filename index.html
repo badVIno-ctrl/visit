@@ -4516,6 +4516,98 @@ body.nexus-menu-open .nexus-mobile-menu {
   letter-spacing: 0.22em;
   text-transform: uppercase;
 }
+
+/* =========================================================
+   MOBILE LITE PASS
+   Keep the cube field untouched; simplify only UI chrome and
+   decorative motion so weak phones scroll more smoothly.
+   ========================================================= */
+@media (max-width: 767px) {
+  .nexus-header,
+  .nexus-mobile-menu,
+  .nexus-hero-stats,
+  .nexus-core-stage,
+  .nexus-core-chip,
+  .nexus-core-side-panel,
+  .nexus-core-panel,
+  .nexus-s2-node,
+  .nexus-s2-info-card,
+  .nexus-s2-note,
+  .nexus-s2-machine,
+  .nexus-s3-card,
+  .nexus-s3-tip,
+  .nexus-s3-rank,
+  .nexus-s4-process-card,
+  .nexus-s4-machine,
+  .nexus-s5-leaderboard,
+  .nexus-s5-current-run,
+  .nexus-s6-card,
+  .nexus-s6-command,
+  .nexus-s7-status {
+    -webkit-backdrop-filter: blur(4px) !important;
+    backdrop-filter: blur(4px) !important;
+  }
+
+  .nexus-core-ring,
+  .nexus-mini-particle,
+  .nexus-s2-flow-pixel,
+  .nexus-s4-ring,
+  .nexus-s7-ring {
+    display: none !important;
+  }
+
+  .nexus-core-meter span,
+  .nexus-s2-core,
+  .nexus-s2-meter span,
+  .nexus-s3-meter-fill,
+  .nexus-s4-core,
+  .nexus-s5-dot,
+  .nexus-s5-progress-fill,
+  .nexus-s5-pulse,
+  .nexus-s6-cursor,
+  .nexus-s6-meter-fill,
+  .nexus-s6-chip,
+  .nexus-s7-spin {
+    animation: none !important;
+  }
+
+  .nexus-header,
+  .nexus-mobile-menu,
+  .nexus-core-stage,
+  .nexus-s2-machine,
+  .nexus-s3-card,
+  .nexus-s4-machine,
+  .nexus-s5-leaderboard,
+  .nexus-s6-command {
+    box-shadow: none !important;
+  }
+
+  .nexus-s3-card:hover,
+  .nexus-button-primary:hover,
+  .nexus-button-secondary:hover,
+  .nexus-header-cta:hover {
+    transform: none !important;
+  }
+
+  .nexus-hero,
+  .nexus-s2-frame,
+  .nexus-s3-section,
+  .nexus-s4-section,
+  .nexus-s5-section,
+  .nexus-s6-section,
+  .nexus-s7-section,
+  .nexus-footer {
+    contain: layout paint;
+  }
+
+  .nexus-scanlines {
+    opacity: 0.18;
+  }
+
+  .nexus-vignette {
+    opacity: 0.6;
+  }
+}
 </style><!-- aura-ga4-end -->
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTMiIGZpbGw9IiMwMjAzMEEiLz48cmVjdCB4PSIzLjUiIHk9IjMuNSIgd2lkdGg9IjU3IiBoZWlnaHQ9IjU3IiByeD0iMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzM1RERGMiIgc3Ryb2tlLXdpZHRoPSIyIiBvcGFjaXR5PSIwLjU1Ii8+PHBhdGggZD0iTTE2IDE4IEwzMiA0NyBMNDggMTgiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0U4Qjg1RCIgc3Ryb2tlLXdpZHRoPSI2IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48Y2lyY2xlIGN4PSI0OCIgY3k9IjE4IiByPSIzLjQiIGZpbGw9IiNGNDVCQTgiLz48L3N2Zz4=">
 <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTMiIGZpbGw9IiMwMjAzMEEiLz48cmVjdCB4PSIzLjUiIHk9IjMuNSIgd2lkdGg9IjU3IiBoZWlnaHQ9IjU3IiByeD0iMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzM1RERGMiIgc3Ryb2tlLXdpZHRoPSIyIiBvcGFjaXR5PSIwLjU1Ii8+PHBhdGggZD0iTTE2IDE4IEwzMiA0NyBMNDggMTgiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0U4Qjg1RCIgc3Ryb2tlLXdpZHRoPSI2IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48Y2lyY2xlIGN4PSI0OCIgY3k9IjE4IiByPSIzLjQiIGZpbGw9IiNGNDVCQTgiLz48L3N2Zz4=">
