@@ -4065,6 +4065,56 @@ body.nexus-menu-open { overflow: hidden; }
 @media (max-width: 767px) {
   .nexus-s2-frame { box-shadow: 0 0 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(248,243,255,0.06); }
 }
+/* ============================================================
+   WEAK-PHONE SMOOTHNESS + OVERLAP FIXES (added)
+   Pure performance/layout work. The background gradient,
+   #pixel-canvas physics, .nexus-cube* and all @keyframes are
+   intentionally left untouched.
+   ============================================================ */
+@media (max-width: 768px) {
+  /* backdrop-filter re-blurs the live animated canvas on EVERY frame — the
+     single biggest scroll-jank source on weak phones. Remove it and make the
+     glass panels a touch more opaque so the text stays crisp. */
+  .nexus-header,
+  .nexus-hero-stats,
+  .nexus-core-stage, .nexus-core-chip, .nexus-core-side-panel, .nexus-core-panel,
+  .nexus-s2-node, .nexus-s4-monitor-label,
+  .nexus-s3-tip, .nexus-s3-rank,
+  .nexus-s5-leaderboard, .nexus-s5-current-run,
+  .nexus-s7-status {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  .nexus-header { background-color: rgba(5, 0, 16, 0.93) !important; }
+  .nexus-s2-node { background: rgba(2, 3, 10, 0.94) !important; }
+  .nexus-s4-monitor-label { background: rgba(2, 3, 10, 0.94) !important; }
+
+  /* ---- Fix overlapping labels inside the "monitor" visuals ---- */
+  /* corner pills: compact + width-capped so opposite corners never collide */
+  .nexus-s2-node, .nexus-s4-monitor-label {
+    min-width: 0 !important;
+    max-width: 44% !important;
+    font-size: 0.6rem !important;
+    letter-spacing: 0.1em !important;
+    padding: 0.5rem 0.55rem !important;
+    gap: 0.4rem !important;
+    line-height: 1.15 !important;
+  }
+  /* S2: lift bottom pills above the console; keep the console on one short row */
+  .nexus-s2-node.output, .nexus-s2-node.system { bottom: 27% !important; }
+  .nexus-s2-console { padding: 0.9rem !important; }
+  .nexus-s2-console .grid {
+    grid-template-columns: 1fr auto !important;
+    gap: 0.6rem !important;
+    align-items: end !important;
+  }
+  .nexus-s2-console .grid > div:last-child { padding: 0.55rem 0.6rem !important; }
+  /* S4: lift the bottom labels above the (taller) stacked console */
+  .nexus-s4-monitor-label.motion,
+  .nexus-s4-monitor-label.system { bottom: 35% !important; }
+  .nexus-s4-console { padding: 0.9rem !important; }
+  .nexus-s4-console-grid { gap: 0.7rem !important; }
+}
 </style><!-- aura-ga4-end -->
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTMiIGZpbGw9IiMwMjAzMEEiLz48cmVjdCB4PSIzLjUiIHk9IjMuNSIgd2lkdGg9IjU3IiBoZWlnaHQ9IjU3IiByeD0iMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzM1RERGMiIgc3Ryb2tlLXdpZHRoPSIyIiBvcGFjaXR5PSIwLjU1Ii8+PHBhdGggZD0iTTE2IDE4IEwzMiA0NyBMNDggMTgiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0U4Qjg1RCIgc3Ryb2tlLXdpZHRoPSI2IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48Y2lyY2xlIGN4PSI0OCIgY3k9IjE4IiByPSIzLjQiIGZpbGw9IiNGNDVCQTgiLz48L3N2Zz4=">
 <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTMiIGZpbGw9IiMwMjAzMEEiLz48cmVjdCB4PSIzLjUiIHk9IjMuNSIgd2lkdGg9IjU3IiBoZWlnaHQ9IjU3IiByeD0iMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzM1RERGMiIgc3Ryb2tlLXdpZHRoPSIyIiBvcGFjaXR5PSIwLjU1Ii8+PHBhdGggZD0iTTE2IDE4IEwzMiA0NyBMNDggMTgiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0U4Qjg1RCIgc3Ryb2tlLXdpZHRoPSI2IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48Y2lyY2xlIGN4PSI0OCIgY3k9IjE4IiByPSIzLjQiIGZpbGw9IiNGNDVCQTgiLz48L3N2Zz4=">
@@ -5276,7 +5326,7 @@ body.nexus-menu-open { overflow: hidden; }
 
                 <div>
                   <div class="nexus-s5-player-name" data-s5-collider="player-name">Сканер города</div>
-                  <div class="nexus-s5-player-meta" data-s5-collider="player-meta">интерактивный поиск точек</div>
+                  <div class="nexus-s5-player-meta" data-s5-collider="player-meta">интер��ктивный поиск точек</div>
                 </div>
 
                 <div class="nexus-s5-run-type text-[#ff66b3]" data-s5-collider="run-type">карта</div>
@@ -8065,30 +8115,55 @@ setupSection5Animations();
   }
 
   function drawBackgroundBase() {
+    /* Repaint only the on-screen band each frame instead of the whole
+       page-tall canvas. Off-screen pixels are not visible, so the result is
+       identical — but on long pages this saves a huge fill every frame. */
+    var sY = window.pageYOffset || document.documentElement.scrollTop || 0;
+    var vh = window.innerHeight || height;
+    var bandTop = sY - 600;
+    if (bandTop < 0) bandTop = 0;
+    var bandBottom = sY + vh + 600;
+    if (bandBottom > pageHeight) bandBottom = pageHeight;
+    var bandHeight = bandBottom - bandTop;
+
     ctx.fillStyle = "#03000a";
-    ctx.fillRect(0, 0, width, pageHeight);
+    if (bandHeight > 0) {
+      ctx.fillRect(0, bandTop, width, bandHeight);
+    }
 
-    const gradient = ctx.createRadialGradient(
-      width * 0.78,
-      height * 0.38,
-      0,
-      width * 0.78,
-      height * 0.38,
-      Math.max(width, height) * 0.72
-    );
+    if (bandTop < height) {
+      const gradient = ctx.createRadialGradient(
+        width * 0.78,
+        height * 0.38,
+        0,
+        width * 0.78,
+        height * 0.38,
+        Math.max(width, height) * 0.72
+      );
 
-    gradient.addColorStop(0, "rgba(0, 240, 255, 0.13)");
-    gradient.addColorStop(0.35, "rgba(255, 0, 127, 0.08)");
-    gradient.addColorStop(1, "rgba(5, 0, 16, 0)");
+      gradient.addColorStop(0, "rgba(0, 240, 255, 0.13)");
+      gradient.addColorStop(0.35, "rgba(255, 0, 127, 0.08)");
+      gradient.addColorStop(1, "rgba(5, 0, 16, 0)");
 
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, width, height);
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, width, height);
+    }
   }
 
   function animatePixels(time) {
     drawBackgroundBase();
 
+    /* Only draw blocks that are within (or just outside) the viewport.
+       Off-screen blocks are invisible, so culling them keeps the look
+       identical while skipping the expensive shadowBlur draw on weak phones. */
+    var sY = window.pageYOffset || document.documentElement.scrollTop || 0;
+    var vh = window.innerHeight || height;
+    var cullTop = sY - 400;
+    var cullBottom = sY + vh + 400;
+
     blocks.forEach(block => {
+      var by = block.body.position.y;
+      if (by < cullTop || by > cullBottom) return;
       drawBlock(block, time);
     });
 
