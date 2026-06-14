@@ -4330,6 +4330,192 @@ padding: 1.5rem;
     overflow: hidden;
   }
 }
+
+/* =========================================================
+   MOBILE NAVIGATION (burger + full-screen overlay)
+   Hidden on >= 768px where the inline nav is shown.
+   ========================================================= */
+.nexus-burger {
+  display: none;
+  position: relative;
+  z-index: 90;
+  width: 2.85rem;
+  height: 2.85rem;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(53, 221, 242, 0.30);
+  background: rgba(53, 221, 242, 0.05);
+  color: var(--nexus-cyan);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: border-color 250ms ease, background 250ms ease;
+}
+
+.nexus-burger:hover,
+.nexus-burger:focus-visible {
+  border-color: rgba(53, 221, 242, 0.55);
+  background: rgba(53, 221, 242, 0.10);
+  outline: none;
+}
+
+.nexus-burger-box {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 1.35rem;
+  height: 1rem;
+}
+
+.nexus-burger-line {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: currentColor;
+  transition: transform 280ms ease, opacity 200ms ease;
+}
+
+@media (max-width: 767px) {
+  .nexus-burger {
+    display: inline-flex;
+  }
+}
+
+/* Active (open) state animates the lines into an X */
+body.nexus-menu-open .nexus-burger-line:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+body.nexus-menu-open .nexus-burger-line:nth-child(2) {
+  opacity: 0;
+}
+body.nexus-menu-open .nexus-burger-line:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+body.nexus-menu-open {
+  overflow: hidden;
+}
+
+.nexus-mobile-menu {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.6rem;
+  padding: 6.5rem 1.6rem 2.4rem;
+  background:
+    linear-gradient(180deg, rgba(8, 5, 26, 0.92), rgba(2, 3, 10, 0.96)),
+    radial-gradient(circle at 78% 18%, rgba(53, 221, 242, 0.10), transparent 46%),
+    radial-gradient(circle at 18% 82%, rgba(244, 91, 168, 0.09), transparent 46%);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition: opacity 320ms ease, transform 320ms ease, visibility 0s linear 320ms;
+}
+
+.nexus-mobile-menu[hidden] {
+  display: flex;
+}
+
+body.nexus-menu-open .nexus-mobile-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  transition: opacity 320ms ease, transform 320ms ease, visibility 0s linear 0s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nexus-mobile-menu,
+  .nexus-burger-line {
+    transition: none;
+  }
+}
+
+.nexus-mobile-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.nexus-mobile-link {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 0.95rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.018);
+  color: rgba(247, 242, 255, 0.78);
+  text-transform: uppercase;
+  transition: border-color 220ms ease, background 220ms ease, color 220ms ease, transform 220ms ease;
+}
+
+.nexus-mobile-link:active {
+  transform: scale(0.985);
+}
+
+.nexus-mobile-link:hover,
+.nexus-mobile-link:focus-visible {
+  border-color: rgba(53, 221, 242, 0.34);
+  background: rgba(53, 221, 242, 0.06);
+  color: var(--nexus-text);
+  outline: none;
+}
+
+.nexus-mobile-link-index {
+  font-family: "VT323", monospace;
+  font-size: 1.35rem;
+  line-height: 1;
+  color: var(--nexus-cyan);
+}
+
+.nexus-mobile-link-label {
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.35rem, 7vw, 1.8rem);
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+
+.nexus-mobile-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  min-height: 3.4rem;
+  border: 2px solid rgba(232, 184, 93, 0.50);
+  background: rgba(232, 184, 93, 0.06);
+  color: var(--nexus-gold);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.92rem;
+  transition: background 240ms ease, color 240ms ease;
+}
+
+.nexus-mobile-cta:active {
+  background: var(--nexus-gold);
+  color: var(--nexus-bg);
+}
+
+.nexus-mobile-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.4rem;
+  color: rgba(247, 242, 255, 0.40);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
 </style><!-- aura-ga4-end -->
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTMiIGZpbGw9IiMwMjAzMEEiLz48cmVjdCB4PSIzLjUiIHk9IjMuNSIgd2lkdGg9IjU3IiBoZWlnaHQ9IjU3IiByeD0iMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzM1RERGMiIgc3Ryb2tlLXdpZHRoPSIyIiBvcGFjaXR5PSIwLjU1Ii8+PHBhdGggZD0iTTE2IDE4IEwzMiA0NyBMNDggMTgiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0U4Qjg1RCIgc3Ryb2tlLXdpZHRoPSI2IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48Y2lyY2xlIGN4PSI0OCIgY3k9IjE4IiByPSIzLjQiIGZpbGw9IiNGNDVCQTgiLz48L3N2Zz4=">
 <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTMiIGZpbGw9IiMwMjAzMEEiLz48cmVjdCB4PSIzLjUiIHk9IjMuNSIgd2lkdGg9IjU3IiBoZWlnaHQ9IjU3IiByeD0iMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzM1RERGMiIgc3Ryb2tlLXdpZHRoPSIyIiBvcGFjaXR5PSIwLjU1Ii8+PHBhdGggZD0iTTE2IDE4IEwzMiA0NyBMNDggMTgiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0U4Qjg1RCIgc3Ryb2tlLXdpZHRoPSI2IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48Y2lyY2xlIGN4PSI0OCIgY3k9IjE4IiByPSIzLjQiIGZpbGw9IiNGNDVCQTgiLz48L3N2Zz4=">
@@ -4388,7 +4574,52 @@ padding: 1.5rem;
         Написать
       </a>
 
+      <!-- Mobile menu toggle -->
+      <button type="button" class="nexus-burger" id="nexus-burger"
+              aria-label="Открыть меню" aria-expanded="false" aria-controls="nexus-mobile-menu">
+        <span class="nexus-burger-box" aria-hidden="true">
+          <span class="nexus-burger-line"></span>
+          <span class="nexus-burger-line"></span>
+          <span class="nexus-burger-line"></span>
+        </span>
+      </button>
+
     </header>
+
+    <!-- =====================================================
+         MOBILE MENU OVERLAY
+         ===================================================== -->
+    <div class="nexus-mobile-menu" id="nexus-mobile-menu" role="dialog" aria-modal="true"
+         aria-label="Главное меню" hidden>
+      <nav class="nexus-mobile-nav" aria-label="Мобильная навигация">
+        <a href="#" class="nexus-mobile-link" data-menu-close>
+          <span class="nexus-mobile-link-index">01</span>
+          <span class="nexus-mobile-link-label">Главная</span>
+        </a>
+        <a href="#high-scores" class="nexus-mobile-link" data-menu-close>
+          <span class="nexus-mobile-link-index">02</span>
+          <span class="nexus-mobile-link-label">Цифры</span>
+        </a>
+        <a href="#cheat-codes" class="nexus-mobile-link" data-menu-close>
+          <span class="nexus-mobile-link-index">03</span>
+          <span class="nexus-mobile-link-label">Стек</span>
+        </a>
+        <a href="#join-the-guild" class="nexus-mobile-link" data-menu-close>
+          <span class="nexus-mobile-link-index">04</span>
+          <span class="nexus-mobile-link-label">Контакты</span>
+        </a>
+      </nav>
+
+      <a href="#join-the-guild" class="nexus-mobile-cta" data-menu-close>
+        <span class="text-base leading-none">●</span>
+        Написать мне
+      </a>
+
+      <div class="nexus-mobile-foot">
+        <span>badVIno</span>
+        <span>портфолио · 2026</span>
+      </div>
+    </div>
 
     <!-- =====================================================
          HERO SECTION
@@ -6448,6 +6679,44 @@ padding: 1.5rem;
   let section6Activated = false;
   let section7Activated = false;
 
+  /* =====================================================
+     02b. PERFORMANCE PROFILE (device-aware tuning)
+     Keeps the cubes, background and animations intact, but
+     scales their cost so even the weakest phones stay smooth.
+       - countScale : how many cubes to spawn vs. desktop
+       - shadowBlur : per-cube canvas glow (the heaviest paint op)
+       - drawFps    : cap the canvas redraw rate (0 = uncapped)
+     ===================================================== */
+  const perfProfile = (function () {
+    const deviceMemory = navigator.deviceMemory || 4;
+    const cores = navigator.hardwareConcurrency || 4;
+    const coarsePointer = window.matchMedia
+      && window.matchMedia("(pointer: coarse)").matches;
+    const smallSide = Math.min(window.innerWidth, window.innerHeight);
+    const isMobileDevice = coarsePointer || smallSide < 768;
+
+    let tier;
+    if (!isMobileDevice) {
+      tier = "high";
+    } else if (deviceMemory <= 2 || cores <= 4 || smallSide <= 380) {
+      tier = "low";
+    } else {
+      tier = "mid";
+    }
+
+    const presets = {
+      high: { countScale: 1,    shadowBlur: 16, drawFps: 0  },
+      mid:  { countScale: 0.7,  shadowBlur: 8,  drawFps: 0  },
+      low:  { countScale: 0.45, shadowBlur: 0,  drawFps: 30 }
+    };
+
+    return Object.assign({ tier: tier, isMobile: isMobileDevice }, presets[tier]);
+  })();
+
+  function scaledCount(n) {
+    return Math.max(6, Math.round(n * perfProfile.countScale));
+  }
+
   const palette = [
     {
       name: "cyan",
@@ -6619,7 +6888,7 @@ padding: 1.5rem;
     delayedBodies.length = 0;
 
     const isMobile = width < 768;
-    const count = isMobile ? 70 : 130;
+    const count = scaledCount(isMobile ? 70 : 130);
     const firstWaveCount = Math.floor(count * 0.64);
 
     for (let i = 0; i < count; i++) {
@@ -6937,7 +7206,9 @@ function spawnSectionBlocks(sectionId, count = 36) {
   const sectionTop = rect.top + window.scrollY;
   const sectionLeft = rect.left + window.scrollX;
 
-  for (let i = 0; i < count; i++) {
+  const spawnTotal = scaledCount(count);
+
+  for (let i = 0; i < spawnTotal; i++) {
     const color = palette[Math.floor(Math.random() * palette.length)];
 
     const sizeRoll = Math.random();
@@ -8076,7 +8347,7 @@ function spawnSection7SideBurst() {
 
   const rect = target.getBoundingClientRect();
   const sectionTop = rect.top + window.scrollY;
-  const burstCount = width < 768 ? 28 : 54;
+  const burstCount = scaledCount(width < 768 ? 28 : 54);
 
   for (let i = 0; i < burstCount; i++) {
     const color = palette[Math.floor(Math.random() * palette.length)];
@@ -8299,8 +8570,10 @@ setupSection5Animations();
     ctx.translate(pos.x, pos.y);
     ctx.rotate(angle);
 
-    ctx.shadowBlur = 16;
-    ctx.shadowColor = color.glow;
+    if (perfProfile.shadowBlur > 0) {
+      ctx.shadowBlur = perfProfile.shadowBlur;
+      ctx.shadowColor = color.glow;
+    }
 
     ctx.fillStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${alpha})`;
     ctx.fillRect(-size / 2, -size / 2, size - 2, size - 2);
@@ -8341,6 +8614,11 @@ setupSection5Animations();
     ctx.fillRect(0, 0, width, height);
   }
 
+  const minFrameInterval = perfProfile.drawFps > 0
+    ? 1000 / perfProfile.drawFps
+    : 0;
+  let lastDrawTime = 0;
+
   function requestPixelFrame() {
     if (pixelFrameId !== null) return;
 
@@ -8358,6 +8636,19 @@ setupSection5Animations();
     if (!canvasInView && !physicsActive && !finalStaticFramePending) {
       return;
     }
+
+    /* Cap the redraw rate on low-end devices. We still reschedule on rAF
+       so physics keeps advancing smoothly, but we skip the expensive
+       full-canvas repaint until enough time has elapsed. */
+    if (minFrameInterval > 0 && !finalStaticFramePending) {
+      if (time - lastDrawTime < minFrameInterval) {
+        if (physicsActive) {
+          requestPixelFrame();
+        }
+        return;
+      }
+    }
+    lastDrawTime = time;
 
     drawBackgroundBase();
 
@@ -8604,6 +8895,69 @@ setupSection5Animations();
     bind();
   }
   window.addEventListener('load', jumpToInitialHash);
+})();
+</script>
+
+<script id="mobile-menu-controller">
+(function () {
+  var burger = document.getElementById('nexus-burger');
+  var menu = document.getElementById('nexus-mobile-menu');
+  if (!burger || !menu) return;
+
+  var isOpen = false;
+
+  function open() {
+    if (isOpen) return;
+    isOpen = true;
+    menu.hidden = false;
+    // force reflow so the open transition runs from the hidden state
+    void menu.offsetWidth;
+    document.body.classList.add('nexus-menu-open');
+    burger.setAttribute('aria-expanded', 'true');
+    burger.setAttribute('aria-label', 'Закрыть меню');
+  }
+
+  function close() {
+    if (!isOpen) return;
+    isOpen = false;
+    document.body.classList.remove('nexus-menu-open');
+    burger.setAttribute('aria-expanded', 'false');
+    burger.setAttribute('aria-label', 'Открыть меню');
+    // hide after the transition so it stays out of the tab order
+    window.setTimeout(function () {
+      if (!isOpen) menu.hidden = true;
+    }, 340);
+  }
+
+  function toggle() {
+    if (isOpen) { close(); } else { open(); }
+  }
+
+  burger.addEventListener('click', toggle);
+
+  // Close when any in-menu link is tapped (after the anchor scroll fires).
+  menu.querySelectorAll('[data-menu-close]').forEach(function (link) {
+    link.addEventListener('click', function () {
+      close();
+    });
+  });
+
+  // Close on Escape for keyboard users.
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && isOpen) close();
+  });
+
+  // If the viewport grows past the mobile breakpoint, make sure the
+  // menu never stays stuck open over the desktop layout.
+  var desktopQuery = window.matchMedia('(min-width: 768px)');
+  function onBreakpoint(e) {
+    if (e.matches && isOpen) close();
+  }
+  if (desktopQuery.addEventListener) {
+    desktopQuery.addEventListener('change', onBreakpoint);
+  } else if (desktopQuery.addListener) {
+    desktopQuery.addListener(onBreakpoint);
+  }
 })();
 </script>
 </body></html>
