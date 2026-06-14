@@ -4686,6 +4686,7 @@ body.nexus-menu-open .nexus-mobile-menu {
         <a href="#" class="nexus-nav-link is-active">[ Главная ]</a>
         <a href="#high-scores" class="nexus-nav-link">Цифры</a>
         <a href="#cheat-codes" class="nexus-nav-link">Стек</a>
+        <a href="#design-lab" class="nexus-nav-link">Дизайны</a>
         <a href="#join-the-guild" class="nexus-nav-link">Контакты</a>
       </nav>
 
@@ -4725,8 +4726,12 @@ body.nexus-menu-open .nexus-mobile-menu {
           <span class="nexus-mobile-link-index">03</span>
           <span class="nexus-mobile-link-label">Стек</span>
         </a>
-        <a href="#join-the-guild" class="nexus-mobile-link" data-menu-close>
+        <a href="#design-lab" class="nexus-mobile-link" data-menu-close>
           <span class="nexus-mobile-link-index">04</span>
+          <span class="nexus-mobile-link-label">Дизайны</span>
+        </a>
+        <a href="#join-the-guild" class="nexus-mobile-link" data-menu-close>
+          <span class="nexus-mobile-link-index">05</span>
           <span class="nexus-mobile-link-label">Контакты</span>
         </a>
       </nav>
@@ -6276,6 +6281,217 @@ body.nexus-menu-open .nexus-mobile-menu {
   </div>
 
 </section>
+
+<!-- =====================================================
+     DESIGN LAB — pick a prototype, then DM me
+     ===================================================== -->
+<style id="proto-lab-styles">
+  .proto-lab { position: relative; width: 100%; max-width: 90rem; margin-inline: auto; padding: 0 1.5rem 8rem; }
+  @media (min-width: 1024px) { .proto-lab { padding-inline: 3rem; padding-bottom: 10rem; } }
+  .proto-lab-head { max-width: 60rem; }
+  .proto-eyebrow { display: inline-flex; align-items: center; gap: 0.6rem; margin-bottom: 1.3rem; border: 1px solid rgba(164, 119, 255, 0.30); background: rgba(164, 119, 255, 0.06); padding: 0.55rem 0.8rem; color: var(--nexus-purple); font-size: 0.62rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; }
+  .proto-title { font-family: "Space Grotesk", sans-serif; font-size: clamp(2.6rem, 5vw, 4.6rem); line-height: 0.94; letter-spacing: -0.06em; text-transform: uppercase; color: var(--nexus-text); }
+  .proto-title .acc { color: var(--nexus-purple); text-shadow: 0 0 28px rgba(164, 119, 255, 0.34); }
+  .proto-copy { margin-top: 1.4rem; max-width: 44rem; color: rgba(248, 243, 255, 0.66); font-size: 0.96rem; line-height: 1.8; }
+  .proto-steps { margin-top: 1.6rem; display: flex; flex-wrap: wrap; gap: 0.6rem; }
+  .proto-step { display: inline-flex; align-items: center; gap: 0.5rem; border: 1px solid rgba(248, 243, 255, 0.10); background: rgba(2, 3, 10, 0.5); padding: 0.5rem 0.75rem; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(248, 243, 255, 0.6); }
+  .proto-step b { color: var(--nexus-cyan); font-family: "VT323", monospace; font-size: 1.1rem; letter-spacing: 0; }
+  .proto-grid { margin-top: 3rem; display: grid; gap: 1.1rem; grid-template-columns: 1fr; }
+  @media (min-width: 560px) { .proto-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (min-width: 900px) { .proto-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (min-width: 1280px) { .proto-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+  .proto-card { position: relative; display: flex; flex-direction: column; overflow: hidden; border: 1px solid rgba(248, 243, 255, 0.12); background: linear-gradient(180deg, rgba(248, 243, 255, 0.04), rgba(248, 243, 255, 0.01)), rgba(2, 3, 10, 0.6); transition: transform 240ms ease, border-color 240ms ease, box-shadow 240ms ease; }
+  .proto-card:hover { transform: translateY(-5px); border-color: rgba(53, 221, 242, 0.5); box-shadow: 0 0 34px rgba(53, 221, 242, 0.14); }
+  .proto-card.is-picked { border-color: rgba(164, 119, 255, 0.7); box-shadow: 0 0 0 1px rgba(164, 119, 255, 0.5), 0 0 40px rgba(164, 119, 255, 0.22); }
+  .proto-shot { position: relative; display: block; aspect-ratio: 16 / 10; overflow: hidden; background: #0a0716; border-bottom: 1px solid rgba(248, 243, 255, 0.08); }
+  .proto-shot img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 400ms ease; }
+  .proto-card:hover .proto-shot img { transform: scale(1.04); }
+  .proto-tag { position: absolute; top: 0.6rem; left: 0.6rem; font-family: "VT323", monospace; font-size: 1.4rem; line-height: 1; padding: 0.05rem 0.5rem; color: var(--nexus-cyan); background: rgba(2, 3, 10, 0.8); border: 1px solid rgba(53, 221, 242, 0.4); }
+  .proto-pickflag { position: absolute; top: 0.6rem; right: 0.6rem; display: none; align-items: center; gap: 0.3rem; font-size: 0.55rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; padding: 0.28rem 0.5rem; color: var(--nexus-bg); background: var(--nexus-purple); }
+  .proto-card.is-picked .proto-pickflag { display: inline-flex; }
+  .proto-card.is-picked .proto-tag { color: var(--nexus-purple); border-color: rgba(164, 119, 255, 0.6); }
+  .proto-actions { display: grid; grid-template-columns: 1fr 1fr; }
+  .proto-btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; padding: 0.85rem 0.5rem; cursor: pointer; font-family: "Space Mono", monospace; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; border: none; background: transparent; color: rgba(248, 243, 255, 0.7); text-decoration: none; transition: background 200ms ease, color 200ms ease; }
+  .proto-btn.view { border-right: 1px solid rgba(248, 243, 255, 0.1); }
+  .proto-btn.view:hover { background: rgba(53, 221, 242, 0.1); color: var(--nexus-cyan); }
+  .proto-btn.pick:hover { background: rgba(164, 119, 255, 0.14); color: var(--nexus-purple); }
+  .proto-card.is-picked .proto-btn.pick { background: rgba(164, 119, 255, 0.16); color: var(--nexus-purple); }
+  .proto-bar { position: fixed; left: 50%; bottom: 1rem; transform: translateX(-50%) translateY(180%); z-index: 85; width: calc(100% - 2rem); max-width: 40rem; display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; padding: 0.85rem 0.95rem; border: 1px solid rgba(164, 119, 255, 0.4); background: rgba(8, 5, 22, 0.96); box-shadow: 0 18px 60px rgba(0, 0, 0, 0.5), 0 0 30px rgba(164, 119, 255, 0.15); transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1); }
+  .proto-bar.is-on { transform: translateX(-50%) translateY(0); }
+  .proto-bar-label { flex: 1; min-width: 9rem; font-size: 0.7rem; color: rgba(248, 243, 255, 0.7); letter-spacing: 0.03em; }
+  .proto-bar-label b { color: var(--nexus-purple); font-family: "VT323", monospace; font-size: 1.35rem; letter-spacing: 0; }
+  .proto-bar-cta { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.78rem 1.1rem; cursor: pointer; border: 2px solid var(--nexus-cyan); background: var(--nexus-cyan); color: var(--nexus-bg); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; text-decoration: none; transition: 200ms ease; }
+  .proto-bar-cta:hover { box-shadow: 0 0 26px rgba(53, 221, 242, 0.4); transform: translateY(-1px); }
+  .proto-toast { position: fixed; left: 50%; bottom: 6.4rem; transform: translateX(-50%) translateY(20px); z-index: 90; opacity: 0; pointer-events: none; max-width: calc(100% - 2rem); padding: 0.7rem 1rem; border: 1px solid rgba(53, 221, 242, 0.4); background: rgba(2, 3, 10, 0.95); color: var(--nexus-text); font-size: 0.72rem; letter-spacing: 0.03em; text-align: center; transition: opacity 240ms ease, transform 240ms ease; }
+  .proto-toast.is-on { opacity: 1; transform: translateX(-50%) translateY(0); }
+  @media (max-width: 767px) { .proto-lab { content-visibility: auto; contain-intrinsic-size: auto 1600px; } }
+</style>
+
+<section id="design-lab" class="proto-lab">
+  <div class="proto-lab-head">
+    <div class="proto-eyebrow"><span class="font-arcade text-2xl leading-none">//</span> Design Lab · 40 концептов</div>
+    <h2 class="proto-title">Выбери <span class="acc">дизайн</span><br>который зашёл</h2>
+    <p class="proto-copy">40+ готовых прототипов главных экранов: типографика, тёмные темы, 3D и motion. Полистай, открой любой вживую — и если что-то понравилось, жми «Это нравится». Я получу твой выбор в личке и сделаю похожий под твой проект.</p>
+    <div class="proto-steps">
+      <span class="proto-step"><b>01</b> Листай галерею</span>
+      <span class="proto-step"><b>02</b> Открой вживую</span>
+      <span class="proto-step"><b>03</b> «Это нравится» → мне в ЛС</span>
+    </div>
+  </div>
+  <div class="proto-grid" id="proto-grid"></div>
+</section>
+
+<div class="proto-bar" id="proto-bar">
+  <span class="proto-bar-label">Выбран прототип <b id="proto-bar-id">—</b></span>
+  <a class="proto-bar-cta" id="proto-bar-cta" href="https://t.me/badVInq" target="_blank" rel="noopener">Написать мне в ЛС <iconify-icon icon="solar:round-alt-arrow-right-linear" class="text-xl"></iconify-icon></a>
+</div>
+<div class="proto-toast" id="proto-toast"></div>
+
+<script id="proto-lab-controller">
+(function () {
+  var TG = "https://t.me/badVInq";
+  var REPO = "https://github.com/badVIno-ctrl/IIOL/blob/main/design/";
+  var PREVIEW = "https://htmlpreview.github.io/?";
+  var CDN = "https://github.com/user-attachments/assets/";
+  var items = [
+    ["V1", "4f038816-6a9e-4311-a5ad-f357554a8aa6"],
+    ["V2", "1b315a97-8270-48ca-8a8e-c3b521ef73c4"],
+    ["V3", "39d01c4d-9ee9-4164-877b-f843029ff36e"],
+    ["V4", "7f67909a-b606-4239-8596-a206becf7730"],
+    ["V5", "69b6e02d-5254-44de-a7ac-795bb68299c9"],
+    ["V6", "dc08a926-429c-4d24-825c-72757e1e982f"],
+    ["V7", "da2c01b2-b95f-4a84-bff4-48e90c9e7617"],
+    ["V8", "8390014e-5303-42fd-89bf-d146a8d40a97"],
+    ["V9", "78474244-5b7e-4199-af21-5fb8b9dd8549"],
+    ["V11", "fc512a01-fdd7-409b-b7b4-97230bd01e30"],
+    ["V12", "f6d99ee6-537a-48d7-847e-4712d21cfdd2"],
+    ["V13", "b08b2536-9423-428d-9b26-6a0e1d13e8c1"],
+    ["V14", "392301ff-311e-484e-a6f9-4586d67817d4"],
+    ["V15", "331fb218-25eb-4ad4-bda3-11ff816b23b3"],
+    ["V16", "8ce017e0-467d-4421-8580-f006a391ac34"],
+    ["V17", "e7e5ac84-597f-48e3-a9fd-08a1b08eb88e"],
+    ["V18", "029275da-b9c4-44ac-8123-cbcd471d2a16"],
+    ["V19", "d6928c77-1af2-425f-9470-fb4569f952d8"],
+    ["V20", "5041ca22-82f6-480d-8c91-3b62c0b32c20"],
+    ["V21", "ca56a20f-cc94-43fa-8417-18a8ad5dae51"],
+    ["V22", "edac1276-5e2e-4f8f-ab72-4552957d03ac"],
+    ["V23", "06f99599-8f8a-4d91-9a2c-52118b7743ee"],
+    ["V24", "0eb21cdc-d595-4057-8e9c-0e6154e6ed28"],
+    ["V25", "b9ac7961-f626-4f4a-b5c1-702ab1bb033b"],
+    ["V26", "ebffd7ae-5052-424c-a900-01af164a2a63"],
+    ["V27", "324f594e-a454-428e-983b-43f89fa18949"],
+    ["V28", "5dedd5d5-a003-4344-a566-e3ab8dfaf364"],
+    ["V29", "85aa9d80-6ed5-4707-9d6d-bc6afdce730a"],
+    ["V30", "c5d5cdc8-5191-4bda-b12a-b2abd7b9d1a9"],
+    ["V31", "3c4fd14e-82bd-4e1b-a8c6-e2a7e51a8ecf"],
+    ["V32", "3e0657be-197e-40e5-b363-63e744567e7c"],
+    ["V33", "d03ff237-80ca-4765-8237-27ca124fe04a"],
+    ["V34", "ccdc30ab-9ddf-4ad1-ad40-d8b2d7344cec"],
+    ["V35", "84f41610-8df9-42b2-b73c-8c8987a73a80"],
+    ["V36", "de9b7a43-e98d-416a-b588-295bac3adbff"],
+    ["V37", "17e1d73c-0710-4f27-b491-4fb5b50ff97f"],
+    ["V38", "4847287c-a3fb-45ab-91df-ba606cc8784f"],
+    ["V39", "01f92424-3522-43eb-9367-cd57ac2da464"],
+    ["V40", "57070831-91b8-4e71-9b93-52047436a9da"],
+    ["V41", "884d9276-d76d-4d5a-b9bd-4c59f2e02453"]
+  ];
+
+  var grid = document.getElementById("proto-grid");
+  if (!grid) return;
+
+  var frag = document.createDocumentFragment();
+  items.forEach(function (it) {
+    var id = it[0];
+    var img = it[1];
+    var n = id.slice(1);
+    var live = PREVIEW + REPO + "v" + n + ".html";
+    var card = document.createElement("article");
+    card.className = "proto-card";
+    card.setAttribute("data-id", id);
+    card.innerHTML =
+      '<a class="proto-shot" href="' + live + '" target="_blank" rel="noopener" aria-label="Смотреть ' + id + ' вживую">' +
+        '<span class="proto-tag">' + id + '</span>' +
+        '<span class="proto-pickflag"><iconify-icon icon="solar:check-circle-bold"></iconify-icon> выбрано</span>' +
+        '<img loading="lazy" decoding="async" src="' + CDN + img + '" alt="Прототип ' + id + '">' +
+      '</a>' +
+      '<div class="proto-actions">' +
+        '<a class="proto-btn view" href="' + live + '" target="_blank" rel="noopener"><iconify-icon icon="solar:eye-linear"></iconify-icon> Смотреть</a>' +
+        '<button type="button" class="proto-btn pick"><iconify-icon icon="solar:heart-linear"></iconify-icon> Это нравится</button>' +
+      '</div>';
+    frag.appendChild(card);
+  });
+  grid.appendChild(frag);
+
+  var bar = document.getElementById("proto-bar");
+  var barId = document.getElementById("proto-bar-id");
+  var barCta = document.getElementById("proto-bar-cta");
+  var toast = document.getElementById("proto-toast");
+  var picked = null;
+  var toastTimer = null;
+
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.classList.add("is-on");
+    window.clearTimeout(toastTimer);
+    toastTimer = window.setTimeout(function () { toast.classList.remove("is-on"); }, 3800);
+  }
+
+  function messageFor(id) {
+    return "Привет! Мне понравился прототип " + id + " из твоего Design Lab (badVIno). Хочу обсудить похожий дизайн для своего проекта.";
+  }
+
+  function fallbackCopy(text) {
+    try {
+      var ta = document.createElement("textarea");
+      ta.value = text;
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.focus();
+      ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+    } catch (e) {}
+  }
+
+  function copyText(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).catch(function () { fallbackCopy(text); });
+    } else {
+      fallbackCopy(text);
+    }
+  }
+
+  function pick(id) {
+    picked = id;
+    Array.prototype.forEach.call(grid.querySelectorAll(".proto-card"), function (c) {
+      c.classList.toggle("is-picked", c.getAttribute("data-id") === id);
+    });
+    barId.textContent = id;
+    bar.classList.add("is-on");
+  }
+
+  grid.addEventListener("click", function (e) {
+    var btn = e.target.closest(".proto-btn.pick");
+    if (!btn) return;
+    e.preventDefault();
+    var card = btn.closest(".proto-card");
+    if (!card) return;
+    var id = card.getAttribute("data-id");
+    pick(id);
+    copyText(messageFor(id));
+    showToast("Сообщение про " + id + " скопировано — вставь его мне в чат Telegram ✦");
+  });
+
+  barCta.addEventListener("click", function () {
+    if (picked) {
+      copyText(messageFor(picked));
+      showToast("Сообщение про " + picked + " скопировано — вставь в чат ✦");
+    }
+  });
+})();
+</script>
+
 
     <!-- =====================================================
  SECTION 07 — FINAL CTA
@@ -8903,8 +9119,19 @@ setupSection5Animations();
     }, 900);
   }
 
+  let lastViewportWidth = window.innerWidth;
   let resizeTimer = null;
   window.addEventListener("resize", () => {
+    const newWidth = window.innerWidth;
+    /* On phones, scrolling shows/hides the browser address bar, which fires a
+       `resize` with ONLY a height change. Previously that rebuilt the whole
+       physics scene — so the cubes respawned and fell again every time you
+       scrolled back up, and it stuttered. Ignore height-only resizes here;
+       only react to a real width change (e.g. orientation flip). */
+    if (renderViewportOnly && newWidth === lastViewportWidth) {
+      return;
+    }
+    lastViewportWidth = newWidth;
     window.clearTimeout(resizeTimer);
     resizeTimer = window.setTimeout(() => {
       resize();
