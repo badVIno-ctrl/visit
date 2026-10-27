@@ -1,0 +1,14 @@
+{
+  "name": "viora-visit-updater",
+  "private": true,
+  "type": "module",
+  "description": "Собирает визитку VIORA STUDIO: работы, YouTube и Telegram.",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "update": "node update.mjs",
+    "offline": "node update.mjs --offline"
+  },
+  "dependencies": {
+    "sharp": "^0.35.5"
+  }
+}

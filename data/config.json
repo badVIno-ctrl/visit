@@ -1,0 +1,68 @@
+{
+  "site": {
+    "url": "https://badvino-ctrl.github.io/visit/",
+    "timezone": "Europe/Moscow"
+  },
+  "youtube": {
+    "channelId": "UCgOuDp0xaisr-rB1ynMbToA",
+    "handle": "@badVIno-VS",
+    "fresh": {
+      "count": 2
+    },
+    "trending": {
+      "count": 5,
+      "gravity": 1.0,
+      "pins": [
+        {
+          "id": "DUF1xOOXqdQ",
+          "until": "2026-11-09"
+        },
+        {
+          "id": "Ip7O48M40B0",
+          "until": "2026-11-09"
+        },
+        {
+          "id": "v5HjiEBSZoc",
+          "until": "2026-11-09"
+        },
+        {
+          "id": "8Sc8EdSyJgY",
+          "until": "2026-11-09"
+        },
+        {
+          "id": "Ji3A3utxRlU",
+          "until": "2026-11-09"
+        }
+      ]
+    },
+    "hide": [],
+    "titles": {}
+  },
+  "telegram": {
+    "channel": "VioraStudio",
+    "autoTag": "#релиз",
+    "featured": [
+      751,
+      706,
+      695
+    ],
+    "posts": {
+      "695": {
+        "title": "Мем из канала: другой кандидат тоже я",
+        "alt": "Скриншот переписки с HR: одному аккаунту отказали, второму в тот же день предложили собеседование",
+        "layout": "tall"
+      },
+      "706": {
+        "list": [
+          "Три пака скиллов для агентов",
+          "AI Job Search",
+          "Логотипы через агента",
+          "Vectorize для ChatGPT",
+          "389 вирусных видео на Opus 5.5",
+          "Сайт Anthropic для разработчиков"
+        ],
+        "more": "и ещё 7 сервисов в подборке"
+      }
+    }
+  }
+}

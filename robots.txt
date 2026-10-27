@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://badvino-ctrl.github.io/visit/sitemap.xml

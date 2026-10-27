@@ -1,0 +1,329 @@
+{
+  "initial": 7,
+  "categories": [
+    {
+      "id": "games",
+      "label": "Игры"
+    },
+    {
+      "id": "sites",
+      "label": "Сайты и магазины"
+    },
+    {
+      "id": "services",
+      "label": "Сервисы"
+    },
+    {
+      "id": "tools",
+      "label": "Инструменты"
+    }
+  ],
+  "items": [
+    {
+      "slug": "viora-skills",
+      "featured": true,
+      "cat": "tools",
+      "title": "Viora Skills",
+      "desc": "Шесть открытых скиллов для ИИ агентов: дизайн, код, безопасность, порядок сборки, голос канала и вертикальные ролики. Работают офлайн и без зависимостей.",
+      "tags": [
+        "Claude Code",
+        "Codex",
+        "Cursor",
+        "MIT"
+      ],
+      "url": "#skills",
+      "go": "Смотреть скиллы",
+      "repo": "https://github.com/badVIno-ctrl/viora-skills",
+      "badge": "флагман",
+      "termTitle": "~/viora-skills",
+      "term": [
+        [
+          "$",
+          "ls viora-skills"
+        ],
+        [
+          "viora-design-skills",
+          "дизайн"
+        ],
+        [
+          "viora-code-protocol",
+          "код"
+        ],
+        [
+          "viora-aegis",
+          "безопасность"
+        ],
+        [
+          "viora-build",
+          "фазы сборки"
+        ],
+        [
+          "channel-skill",
+          "голос канала"
+        ],
+        [
+          "shorts",
+          "ролики 9:16"
+        ],
+        [
+          "ok",
+          "6 пакетов · 14 агентов · MIT"
+        ]
+      ]
+    },
+    {
+      "slug": "design-lab",
+      "cat": "tools",
+      "image": "designlab",
+      "sleepy": true,
+      "title": "Design Lab",
+      "desc": "ИИ конструктор сайтов: 98 премиум шаблонов, правки обычными словами, загрузка своего ZIP и аудит безопасности.",
+      "alt": "Design Lab: первый экран с полем, где сайт описывают словами",
+      "tags": [
+        "FastAPI",
+        "Python",
+        "ИИ"
+      ],
+      "url": "https://desing-lab.onrender.com/",
+      "repo": "https://github.com/badVIno-ctrl/Design-Lab-DL-"
+    },
+    {
+      "slug": "mafia",
+      "cat": "games",
+      "image": "mafia",
+      "sleepy": true,
+      "title": "Мафия онлайн",
+      "desc": "Классическая мафия в браузере: партия с ботами или по сети с живыми людьми, от 6 до 20 игроков.",
+      "alt": "Мафия онлайн: заставка с силуэтами игроков за столом",
+      "tags": [
+        "Node.js",
+        "0 зависимостей",
+        "Мультиплеер"
+      ],
+      "url": "https://mafia-hxg6.onrender.com/",
+      "repo": "https://github.com/badVIno-ctrl/mafia"
+    },
+    {
+      "slug": "seabattle",
+      "cat": "games",
+      "image": "seabattle",
+      "sleepy": true,
+      "title": "Морской бой 3D",
+      "desc": "Морской бой в 3D с погодой и сменой времени суток: ИИ на четырёх уровнях или дуэль 1 на 1 по сети.",
+      "alt": "Морской бой 3D: расстановка флота на двух игровых полях",
+      "tags": [
+        "Three.js",
+        "PWA",
+        "Онлайн"
+      ],
+      "url": "https://seabattle-sj83.onrender.com/",
+      "repo": "https://github.com/badVIno-ctrl/seabattle"
+    },
+    {
+      "slug": "viora-media",
+      "cat": "tools",
+      "image": "viorasearch",
+      "sleepy": true,
+      "title": "Viora Media",
+      "desc": "ИИ продюсер для YouTube: аудит канала, поиск вирусных выбросов и план тем на 30 дней. Для Telegram есть личный чат с Viora AI.",
+      "alt": "Viora Media: выбор платформы для аудита, YouTube или Telegram",
+      "tags": [
+        "ИИ",
+        "YouTube",
+        "Аналитика"
+      ],
+      "url": "https://viorasearch.onrender.com/",
+      "repo": "https://github.com/badVIno-ctrl/youtubesearch"
+    },
+    {
+      "slug": "kot-begemot",
+      "cat": "sites",
+      "image": "wbkvisit",
+      "title": "Кот Бегемот",
+      "desc": "Визитка книжной лавки в хоррор эстетике: каталог, корзина, мерч и черновик заказа.",
+      "alt": "Кот Бегемот: хоррор витрина книжной лавки с котом и лампой",
+      "tags": [
+        "HTML",
+        "CSS",
+        "JavaScript"
+      ],
+      "url": "https://badvino-ctrl.github.io/wbkvisit/",
+      "repo": "https://github.com/badVIno-ctrl/wbkvisit"
+    },
+    {
+      "slug": "aura-it",
+      "cat": "sites",
+      "image": "aurait",
+      "sleepy": true,
+      "title": "Aura IT",
+      "desc": "Сайт IT студии для промышленных предприятий: разработка, 1С и автоматизация. Без фреймворков, со своим движком анимаций.",
+      "alt": "Aura IT: первый экран сайта IT студии",
+      "tags": [
+        "Vanilla JS",
+        "Анимации"
+      ],
+      "url": "https://aurait.onrender.com/",
+      "repo": "https://github.com/badVIno-ctrl/Aura-IT-business-card"
+    },
+    {
+      "slug": "fps-arena",
+      "cat": "games",
+      "image": "shooter",
+      "sleepy": true,
+      "title": "FPS Arena",
+      "desc": "Шутер от первого лица прямо в браузере: бои с ботами, дуэли 1 на 1 и командные матчи.",
+      "alt": "FPS Arena: меню выбора режима браузерного шутера",
+      "tags": [
+        "Three.js",
+        "FastAPI",
+        "Мультиплеер"
+      ],
+      "url": "https://game-t4at.onrender.com/",
+      "repo": "https://github.com/badVIno-ctrl/game"
+    },
+    {
+      "slug": "chess",
+      "cat": "games",
+      "image": "chess",
+      "title": "Шахматы",
+      "desc": "3D шахматы в матовом чёрном и золоте: полные правила, ИИ соперник и живой чат.",
+      "alt": "Шахматы: золотые фигуры на чёрной 3D доске",
+      "tags": [
+        "Three.js",
+        "ИИ соперник"
+      ],
+      "url": "https://badvino-ctrl.github.io/chess/",
+      "repo": "https://github.com/badVIno-ctrl/chess"
+    },
+    {
+      "slug": "checkers",
+      "cat": "games",
+      "image": "checkers",
+      "title": "Золотые шашки",
+      "desc": "Шашки в 3D против ИИ: три уровня сложности, оценка позиции и комментарии соперника по ходу партии.",
+      "alt": "Золотые шашки: 3D доска и панель комментариев ИИ",
+      "tags": [
+        "3D",
+        "ИИ соперник"
+      ],
+      "url": "https://badvino-ctrl.github.io/online-heckers/",
+      "repo": "https://github.com/badVIno-ctrl/online-heckers"
+    },
+    {
+      "slug": "viora-ai",
+      "cat": "services",
+      "image": "vioraai",
+      "title": "Viora AI",
+      "desc": "Чат с ИИ ассистентом Viora: спроси о коде, идеях или текстах. История диалогов и поиск по чатам.",
+      "alt": "Viora AI: окно чата с подсказками для первого вопроса",
+      "tags": [
+        "ИИ",
+        "Чат"
+      ],
+      "url": "https://badvino-ctrl.github.io/vioraAI/",
+      "repo": "https://github.com/badVIno-ctrl/vioraAI"
+    },
+    {
+      "slug": "smart-academy",
+      "cat": "services",
+      "image": "school",
+      "title": "Viora Smart Academy",
+      "desc": "Подготовка к профильному ЕГЭ по математике с 3D учителем: все 19 заданий с разбором.",
+      "alt": "Viora Smart Academy: первый экран с 3D учителем у доски",
+      "tags": [
+        "Next.js",
+        "3D",
+        "ЕГЭ"
+      ],
+      "url": "https://shweb-ten.vercel.app/",
+      "repo": "https://github.com/badVIno-ctrl/shweb"
+    },
+    {
+      "slug": "terka",
+      "cat": "sites",
+      "image": "iphones",
+      "sleepy": true,
+      "title": "Тёрка МСК",
+      "desc": "Магазин техники Apple с доставкой по Москве. Цены пересчитываются по актуальному курсу.",
+      "alt": "Тёрка МСК: каталог iPhone с ценами по курсу",
+      "tags": [
+        "Магазин",
+        "Каталог",
+        "Курс валют"
+      ],
+      "url": "https://iphones-573t.onrender.com/"
+    },
+    {
+      "slug": "zhara",
+      "cat": "sites",
+      "image": "dost",
+      "title": "ЖАРА",
+      "desc": "Доставка горячей еды: каталог блюд, фильтры по категориям, корзина и таймер доставки.",
+      "alt": "ЖАРА: первый экран сервиса доставки еды",
+      "tags": [
+        "HTML",
+        "CSS",
+        "JavaScript"
+      ],
+      "url": "https://badvino-ctrl.github.io/dost/",
+      "repo": "https://github.com/badVIno-ctrl/dost"
+    },
+    {
+      "slug": "smeta",
+      "cat": "services",
+      "image": "smeta2",
+      "title": "СметаПро",
+      "desc": "Сметы на ремонт по комнатам: работы, материалы, итог по объекту и экспорт в PDF.",
+      "alt": "СметаПро: смета ванной комнаты с работами и материалами",
+      "tags": [
+        "Калькулятор",
+        "PDF"
+      ],
+      "url": "https://badvino-ctrl.github.io/smetaonline/",
+      "repo": "https://github.com/badVIno-ctrl/smetaonline"
+    },
+    {
+      "slug": "urban-brew",
+      "cat": "sites",
+      "image": "urbanbrew",
+      "title": "Urban Brew",
+      "desc": "Сайт современной кофейни: меню, история места, блог и контакты.",
+      "alt": "Urban Brew: светлый первый экран сайта кофейни",
+      "tags": [
+        "HTML",
+        "CSS"
+      ],
+      "url": "https://badvino-ctrl.github.io/Urban-Brew/",
+      "repo": "https://github.com/badVIno-ctrl/Urban-Brew"
+    },
+    {
+      "slug": "neurotwin",
+      "cat": "services",
+      "image": "brain",
+      "title": "Нейродвойник Viora",
+      "desc": "Сервис самопознания: психотесты, трекер настроения и итоговый портрет личности с 3D визуализацией.",
+      "alt": "Нейродвойник Viora: нейромодель, тесты и трекер настроения",
+      "tags": [
+        "ИИ",
+        "Тесты",
+        "3D"
+      ],
+      "url": "https://badvino-ctrl.github.io/brain/",
+      "repo": "https://github.com/badVIno-ctrl/brain"
+    },
+    {
+      "slug": "spacevi",
+      "cat": "tools",
+      "image": "spacevi",
+      "title": "spaceVI",
+      "desc": "Умный поиск по всем моим репозиториям на GitHub: описываешь задачу на любом языке и получаешь ссылку.",
+      "alt": "spaceVI: строка поиска по репозиториям GitHub",
+      "tags": [
+        "GitHub",
+        "Автоперевод"
+      ],
+      "url": "https://badvino-ctrl.github.io/spaceVI/",
+      "repo": "https://github.com/badVIno-ctrl/spaceVI"
+    }
+  ]
+}

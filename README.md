@@ -1,59 +1,125 @@
-<div align="center">
+# VIORA STUDIO · визитка badVIno
 
-# badVIno — сайт-визитка
+Живой сайт: https://badvino-ctrl.github.io/visit/
 
-<img width="820" alt="badVIno preview" src="https://github.com/user-attachments/assets/58abc058-19ba-4328-b5a0-a7776e0177fd" />
+Статическая визитка студии VIORA STUDIO: архив работ с категориями, Viora Skills, эфир с YouTube, посты из Telegram, услуги, вопросы и бриф. Эфир и канал обновляются сами через GitHub Actions каждые 2 часа.
 
-### Сайты · Магазины · Игры и сервисы
+## Запуск на GitHub Pages: 3 шага
 
-Чистая статика: **HTML + CSS + JS**. Никаких сборщиков и зависимостей.
+1. Замени файлы репозитория `visit` содержимым архива (вместе со скрытой папкой `.github`) и запушь в `main`.
+2. Открой **Settings → Pages → Build and deployment → Source** и выбери **GitHub Actions**.
+3. Открой **Actions → «Сборка и деплой» → Run workflow**. Через пару минут сайт обновится.
 
-<br>
+Если шаг 2 не сделать, сайт всё равно откроется как обычная статика из ветки, просто без автообновления.
 
-[![Live — GitHub Pages](https://img.shields.io/badge/LIVE-GitHub%20Pages-E11D2A?style=for-the-badge&logo=github&logoColor=white)](https://badvino-ctrl.github.io/visit/)
-[![Mirror — Cloudflare](https://img.shields.io/badge/MIRROR-Cloudflare%20Pages-111111?style=for-the-badge&logo=cloudflare&logoColor=white)](https://visit-77s.pages.dev/)
-[![Design — V3](https://img.shields.io/badge/DESIGN-Макет%20V3-555555?style=for-the-badge&logo=html5&logoColor=white)](https://github.com/badVIno-ctrl/IIOL/blob/main/design/v3.html)
+## Как работает автообновление
 
-<br>
+```
+push в main ┐
+каждые 2 ч  ├─► node scripts/update.mjs ─► готовая папка _site ─► GitHub Pages
+вручную     ┘        │
+                     ├─ YouTube: RSS канала (видео, шортсы, популярные) + страница канала (подписчики, длительности)
+                     └─ Telegram: публичная лента t.me/s/VioraStudio (текст, просмотры, реакции, фото)
+```
 
-![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white)
-![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=css3&logoColor=white)
-![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black)
-![No Dependencies](https://img.shields.io/badge/dependencies-0-E11D2A?style=flat-square)
+* Скрипт пересобирает только блоки между маркерами `<!-- @имя -->` и `<!-- /@имя -->` в `index.html`. Вся остальная вёрстка правится руками как обычно.
+* **В репозиторий ничего не коммитится.** Свежие данные попадают только в опубликованную сборку, история остаётся чистой.
+* Обложки роликов и картинки постов скачиваются и конвертируются в WebP (`assets/img/yt`, `assets/img/tg`), поэтому страница не ходит на YouTube и Telegram при открытии.
+* Если YouTube или Telegram не ответил:
+  * при запуске по расписанию деплой пропускается, на сайте остаётся прошлая версия;
+  * при пуше и ручном запуске берутся прошлые данные из `data/feed.json`, чтобы твои правки всё равно доехали.
+* GitHub выключает расписание после 60 дней без коммитов. Workflow сам себя включает обратно, пустые коммиты не нужны.
+* Тренды: сначала закреплённые шортсы из `pins` (до даты `until`), дальше рейтинг «просмотры / (возраст в днях + 2) ^ gravity». Свежий шортс с хорошим стартом обгоняет старый хит.
 
-</div>
+### Необязательно: ключ YouTube API
 
----
+Без ключа всё работает. С ключом длительности и счётчики берутся из официального API, это надёжнее.
 
-## О проекте
+1. Google Cloud Console → включить **YouTube Data API v3** → создать **API key**.
+2. В репозитории **Settings → Secrets and variables → Actions → New repository secret**, имя `YT_API_KEY`.
 
-**badVIno** — это лёгкая одностраничная визитка-портфолио. Делаю сайты, магазины,
-игры и сервисы — от лендинга на чистом HTML до проектов с прокачанной графикой.
-Дизайн в минимализме: **чёрный / белый / серый + алый акцент**.
+Квоты хватает с запасом: один запуск тратит меньше 10 единиц из 10 000 в сутки.
 
-> 9 языков · фон-канвас · карточки проектов · быстрый контакт
+## Что настраивается в `data/config.json`
 
----
+| Ключ | Что делает |
+|---|---|
+| `youtube.fresh.count` | сколько свежих длинных видео показывать (сейчас 2) |
+| `youtube.trending.count` | сколько шортсов в трендах (сейчас 5) |
+| `youtube.trending.gravity` | насколько сильно возраст топит шортс в рейтинге (1.0 по умолчанию) |
+| `youtube.trending.pins` | `[{ "id": "...", "until": "2026-11-09" }]` закреплённые шортсы, идут первыми до даты |
+| `youtube.hide` | id роликов, которые не показывать нигде |
+| `youtube.titles` | `{ "id": "Свой заголовок" }` замена заголовка ролика на сайте |
+| `telegram.featured` | номера постов для блока «Перехвачено в канале» |
+| `telegram.autoTag` | последний пост с этим тегом (сейчас `#релиз`) сам встаёт первой широкой карточкой |
+| `telegram.posts` | ручные правки поста: `title`, `alt`, `layout` (`wide` или `tall`), `list`, `more` |
 
-## Демо
+## Как добавить или убрать работу
 
-| Площадка | Ссылка |
-| :-- | :-- |
-| 🟥 GitHub Pages | <https://badvino-ctrl.github.io/visit/> |
-| ⬛ Cloudflare Pages | <https://visit-77s.pages.dev/> |
-| 🎨 Макет V3 | <https://github.com/badVIno-ctrl/IIOL/blob/main/design/v3.html> |
+1. Открой `data/works.json` и добавь объект в `items`:
 
----
+```json
+{
+  "slug": "my-game",
+  "cat": "games",
+  "image": "my-game",
+  "sleepy": true,
+  "title": "Название",
+  "desc": "Одно или два предложения: что это и чем цепляет.",
+  "alt": "Что видно на скриншоте",
+  "tags": ["Three.js", "Онлайн"],
+  "url": "https://...",
+  "repo": "https://github.com/badVIno-ctrl/..."
+}
+```
 
-## Возможности
+* `cat`: `games`, `sites`, `services` или `tools`. Категории и подписи лежат в `categories`.
+* `sleepy: true` ставь для демо на бесплатном Render: на карточке появится пометка про первый запуск.
+* `initial` (сейчас 7): сколько карточек видно до кнопки «Показать ещё».
+* Порядок карточек = порядок в файле. Карточка с `"featured": true` рисуется как терминал (сейчас Viora Skills).
 
-- ⚡ **Чистая статика** — открывается мгновенно, без сборщиков и фреймворков
-- 🃏 **Карточки проектов** — динамически из `script.js`
-- 🌌 **Фон-канвас** — анимированный фон на `<canvas>`
-- 📇 **Блок контактов** — быстрый способ связаться
-- 📱 **Адаптивность** — корректно на десктопе и мобильных
+2. Положи скриншот в двух размерах, пропорция 16:10, формат WebP:
+   `assets/img/work/my-game-480.webp` (480×300) и `assets/img/work/my-game-800.webp` (800×500).
+3. Запушь. Workflow сам пересоберёт архив, счётчики и фильтры.
 
----
+## Локально
+
+```bash
+npm ci --prefix scripts                # один раз, ставит sharp для картинок
+node scripts/update.mjs                # полная сборка с сетью
+node scripts/update.mjs --offline      # без сети, из data/feed.json (удобно для правок вёрстки)
+node scripts/update.mjs --refresh-images
+python3 -m http.server 8080            # открыть http://localhost:8080/
+```
+
+Если запускаешь сборку локально и коммитишь результат, обновится и запасной `data/feed.json`. Это необязательно, но полезно раз в пару месяцев.
+
+## Лёгкий режим для слабых устройств
+
+Эффекты (глитч логотипа, зерно, VHS полосы) включаются только там, где не тормозят. Лёгкий режим включается сам, если:
+в системе включено «уменьшение движения», включена экономия трафика, сеть 2G, памяти 2 ГБ и меньше, ядер 2 и меньше,
+или после загрузки медианный кадр дольше 26 мс. Кнопка «Эффекты» в подвале переключает режим вручную и запоминает выбор
+в `localStorage` (ключ `vioraFx`). Анимации вне экрана ставятся на паузу.
+
+## Если сменится адрес
+
+Страница `404.html` использует абсолютные пути `/visit/`, потому что GitHub отдаёт её на любом несуществующем адресе.
+При переименовании репозитория или своём домене замени `/visit/` в `404.html` и адрес в `data/config.json`, `index.html`
+(canonical, og), `privacy.html`, `sitemap.xml` и `robots.txt`.
 
 ## Структура
 
+```
+index.html            главная (готовая разметка, работает и без JS)
+privacy.html          политика конфиденциальности и условия
+404.html              фирменная страница ошибки
+assets/css/style.css  все стили, шрифты Geist и Geist Mono лежат локально
+assets/js/main.js     интерактив без зависимостей
+assets/img/           скриншоты работ, обложки YouTube, картинки постов, бренд, og.jpg
+data/works.json       работы и категории
+data/config.json      настройки YouTube и Telegram
+data/feed.json        последние данные из источников (запасной вариант)
+scripts/update.mjs    сборщик
+docs/PLAN.md          план, исследование и решения
+.github/workflows/update.yml  сборка и деплой
+```
